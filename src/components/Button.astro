@@ -1,0 +1,25 @@
+---
+interface Props {
+	label: string;
+	variant?: "dark" | "light";
+	iconPosition?: "left" | "right";
+	href?: string;
+	className?: string;
+}
+
+const { label, variant = "light", iconPosition = "left", href = "#contact", className = "" } = Astro.props;
+
+const styles =
+	variant === "dark"
+		? "border border-transparent bg-grey-12 bg-[linear-gradient(var(--color-grey-12),var(--color-grey-12)),linear-gradient(180deg,rgb(245_245_245/0.5),rgb(255_255_255/0)_50%)] [background-origin:padding-box,border-box] [background-clip:padding-box,border-box] text-grey-1 shadow-dark hover:border-blue-500 hover:bg-blue-500 hover:bg-none"
+		: "border border-grey-5 bg-grey-2 text-grey-13 hover:bg-grey-4";
+---
+
+<a
+	href={href}
+	class={`inline-flex items-center justify-center gap-2 rounded-pill px-4 py-3 text-medium-sm font-medium transition-colors duration-200 ${styles} ${className}`}
+>
+	{iconPosition === "left" && <slot name="icon" />}
+	<span>{label}</span>
+	{iconPosition === "right" && <slot name="icon" />}
+</a>
