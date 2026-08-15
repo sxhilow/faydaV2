@@ -1,0 +1,21 @@
+---
+import Section from "@components/Section.astro";
+import SectionHeader from "@components/SectionHeader.astro";
+import ProjectCard from "@components/ProjectCard.astro";
+import { projects } from "@constants/projects.ts";
+---
+
+<Section id="work">
+	<div class="flex flex-col gap-16">
+		<SectionHeader
+			pill="Recent Projects"
+			title="What We've Been Building"
+			description="From client work to creative explorations, here's a look at what we've been building recently."
+		/>
+		<div class="flex flex-col border-b border-grey-5">
+			{projects.map((project) => (
+				<ProjectCard {...project} />
+			))}
+		</div>
+	</div>
+</Section>

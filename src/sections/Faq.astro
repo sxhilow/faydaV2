@@ -1,0 +1,70 @@
+---
+import { Image } from "astro:assets";
+import Section from "@components/Section.astro";
+import SectionHeader from "@components/SectionHeader.astro";
+import Button from "@components/Button.astro";
+import FaqItem from "@components/FaqItem.astro";
+import { faqs } from "@constants/faq.ts";
+import founderImage from "@assets/founder.png";
+import MeetIcon from "@assets/icons/google-meet.svg";
+---
+
+<Section className="bg-grey-2 py-20">
+	<div class="flex flex-col items-end gap-16">
+		<SectionHeader
+			pill="Frequently Asked Questions"
+			title="A few things you might want to know."
+			description="Building a website is a big step. Here are some of the questions we get asked most often before getting started."
+			align="center"
+			titleClassName="lg:max-w-[530px]"
+		/>
+		<div class="grid w-full lg:grid-cols-[minmax(0,1fr)_638px]">
+			<aside
+				class="flex flex-col items-center justify-center gap-8 border-t border-grey-5 p-8 text-center lg:border-r lg:border-b lg:px-16 lg:py-16 xl:px-32"
+			>
+				<div class="flex flex-col items-center gap-4">
+					<Image
+						src={founderImage}
+						alt="Sahil, founder of Fayda"
+						width={100}
+						height={100}
+						class="size-25 rounded-full bg-blue-400 object-cover"
+					/>
+					<h3
+						class="font-display font-semibold text-base text-grey-10 md:text-h4 text-center"
+					>
+						Hi, I'm Sahil, the man behind Fayda.
+					</h3>
+				</div>
+				<div class="flex w-full flex-col gap-4 text-left">
+					<p class="text-body text-grey-8 text-center">
+						If you've made it this far, you're probably thinking
+						about a new website or an idea you're ready to bring to
+						life.
+					</p>
+					<p class="text-body text-grey-8 text-center">
+						Whatever stage you're at, you don't need everything
+						figured out before reaching out. Tell me what you're
+						working on, and we'll figure out the next step together.
+					</p>
+				</div>
+				<Button label="Book a 15-Min Call" variant="dark">
+					<MeetIcon slot="icon" class="h-3 w-[14px]" />
+				</Button>
+			</aside>
+			<div
+				class="flex flex-col justify-center border-t border-grey-5 lg:border-x-0 lg:border-b"
+			>
+				{
+					faqs.map((faq) => (
+						<FaqItem
+							question={faq.question}
+							answer={faq.answer}
+							open={faq.open}
+						/>
+					))
+				}
+			</div>
+		</div>
+	</div>
+</Section>

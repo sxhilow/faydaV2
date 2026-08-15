@@ -1,0 +1,28 @@
+---
+import ChevronIcon from "@assets/icons/chevron.svg";
+
+interface Props {
+	question: string;
+	answer?: string;
+	open?: boolean;
+}
+
+const { question, answer, open = false } = Astro.props;
+---
+
+<details class="group border-b border-grey-5 p-8" open={open ? true : undefined}>
+	<summary class="flex list-none cursor-pointer items-center justify-between gap-4 [&::-webkit-details-marker]:hidden">
+		<h3 class="font-sans text-medium font-medium text-grey-10">{question}</h3>
+		<ChevronIcon
+			class="h-4 w-4 shrink-0 transition-transform duration-300 group-open:rotate-180"
+			aria-hidden="true"
+		/>
+	</summary>
+	{answer && (
+		<div class="grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 group-open:grid-rows-[1fr]">
+			<div class="overflow-hidden">
+				<p class="pt-2 text-body-sm text-grey-10">{answer}</p>
+			</div>
+		</div>
+	)}
+</details>

@@ -1,0 +1,51 @@
+---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import Pill from "@components/Pill.astro";
+import Button from "@components/Button.astro";
+import ArrowIcon from "@assets/icons/arrow-top-right.svg";
+
+interface Props {
+	name: string;
+	year: string;
+	tags: string[];
+	description: string;
+	image: ImageMetadata;
+}
+
+const { name, year, tags, description, image } = Astro.props;
+---
+
+<article class="grid items-end border-t border-grey-5 bg-grey-2 lg:grid-cols-2">
+	<figure class="px-8 pt-8 lg:border-r lg:border-grey-5 bg-blue-50">
+		<Image
+			src={image}
+			alt={`${name} — project preview`}
+			class="aspect-338/242 w-full border border-grey-5 object-cover lg:aspect-640/440 lg:border-b-0"
+			widths={[640, 1280]}
+			sizes="(min-width: 1024px) 50vw, 100vw"
+			loading="lazy"
+		/>
+	</figure>
+	<div class="flex flex-col justify-center gap-4 p-8 md:border-grey-5">
+		<div class="flex flex-col gap-4">
+			<div class="flex flex-wrap items-center justify-between gap-4">
+				<h3 class="font-display font-semibold text-h3 text-grey-12">{name}</h3>
+				<span class="whitespace-nowrap text-caption text-grey-8">{year}</span>
+			</div>
+			<ul class="flex flex-wrap gap-2">
+				{tags.map((tag) => (
+					<li>
+						<Pill label={tag} />
+					</li>
+				))}
+			</ul>
+		</div>
+		<p class="text-body leading-[1.55] text-grey-10 md:leading-[1.6]">{description}</p>
+		<div>
+			<Button label="View Details">
+				<ArrowIcon slot="icon" class="h-4 w-4" />
+			</Button>
+		</div>
+	</div>
+</article>

@@ -1,0 +1,53 @@
+---
+import Button from "@components/Button.astro";
+import MeetIcon from "@assets/icons/google-meet.svg";
+
+import type { SvgComponent } from "astro/types";
+
+interface Item {
+	icon: SvgComponent;
+	label: string;
+}
+
+interface Props {
+	eyebrow: string;
+	title: string;
+	subtitle: string;
+	items: Item[];
+	muted?: boolean;
+}
+
+const { eyebrow, title, subtitle, items, muted = false } = Astro.props;
+---
+
+<article class="grid border-y border-grey-5 md:grid-cols-2">
+	<header class="flex flex-col justify-center gap-4 p-8 pb-4 md:items-end md:border-r md:border-grey-5 md:text-right">
+		<div class="flex flex-col gap-4">
+			<p class="text-caption text-grey-10">{eyebrow}</p>
+			<div class="flex flex-col gap-1">
+				<h3 class="font-display font-semibold text-mobile-h2 text-grey-13 lg:text-h2">
+					{title}
+				</h3>
+				<p class="max-w-[440px] text-body text-grey-10">{subtitle}</p>
+			</div>
+		</div>
+		<div class="hidden md:flex">
+			<Button label="Book a 15-Min Call" variant="dark">
+				<MeetIcon slot="icon" class="h-3 w-[14px]" />
+			</Button>
+		</div>
+	</header>
+	<ul class="flex flex-col justify-center gap-2 px-8 pb-8 pt-4">
+		{items.map(({ icon: Icon, label }) => (
+			<li class="flex items-center gap-2">
+				<Icon class="h-4 w-4 shrink-0" />
+				<span class={muted ? "text-body text-grey-8" : "text-body text-grey-10"}>{label}</span>
+			</li>
+		))}
+	</ul>
+	<div class="px-8 pb-8 md:hidden">
+		<Button label="Book a 15-Min Call" variant="dark" className="w-full">
+				<MeetIcon slot="icon" class="h-3 w-[14px]" />
+			</Button>
+	</div>
+</article>

@@ -1,0 +1,22 @@
+---
+import Section from "@components/Section.astro";
+import SectionHeader from "@components/SectionHeader.astro";
+import ServiceCard from "@components/ServiceCard.astro";
+import { services } from "@constants/services.ts";
+---
+
+<Section id="services">
+	<div class="flex flex-col items-center gap-16">
+		<SectionHeader
+			pill="Our Services"
+			title="What are you looking to build?"
+			description="Whether you're starting from scratch or already have a website, there's a clear path forward."
+			titleClassName="lg:max-w-[530px]"
+		/>
+		<div class="flex w-full flex-col">
+			{services.map((service) => (
+				<ServiceCard {...service} />
+			))}
+		</div>
+	</div>
+</Section>

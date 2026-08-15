@@ -1,0 +1,44 @@
+---
+import { Image } from "astro:assets";
+import Button from "@components/Button.astro";
+import Pill from "@components/Pill.astro";
+import MeetIcon from "@assets/icons/google-meet.svg";
+import { marquee } from "@constants/marquee.ts";
+---
+
+<section id="top" class="bg-grey-2">
+	<div class="mx-auto flex w-full max-w-[958px] flex-col items-center gap-16 px-8 pt-16 lg:px-0 lg:pt-28">
+		<div class="flex flex-col items-center gap-4 text-center">
+			<Pill label="Independent Studio" />
+			<h1 class="font-display font-bold text-mobile-h1 text-grey-13 md:text-h1">
+				Websites built from the ground up to get your business moving.
+			</h1>
+			<p class="max-w-full text-body leading-[1.55] text-grey-10 lg:max-w-[630px] lg:leading-[1.6]">
+				Custom-designed and developed websites for businesses that need more than another generic
+				template.
+			</p>
+		</div>
+		<div class="flex w-full flex-col items-center gap-4 md:w-auto md:flex-row">
+			<Button label="Tell Me About Your Project" variant="dark" className="w-full md:w-auto">
+				<MeetIcon slot="icon" class="h-3" />
+			</Button>
+			<Button label="View Work" href="#work" className="w-full md:w-auto" />
+		</div>
+	</div>
+	<div class="relative left-1/2 mt-16 w-screen -translate-x-1/2 overflow-hidden border border-grey-5">
+		<div class="flex w-max items-center justify-center">
+			{marquee.map((item) => (
+				<figure class="w-85 shrink-0 bg-grey-1 p-4 md:w-127 lg:w-157.5 border-r border-grey-5">
+					<Image
+						src={item.image}
+						alt={item.alt}
+						class="aspect-[308/219] w-full border border-grey-5 object-cover shadow-card"
+						widths={[640, 1280]}
+						sizes="(min-width: 1024px) 630px, (min-width: 768px) 508px, 340px"
+						loading="lazy"
+					/>
+				</figure>
+			))}
+		</div>
+	</div>
+</section>
