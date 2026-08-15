@@ -29,7 +29,7 @@ import { primaryNav as links } from "@constants/nav.ts";
 					links.map((link) => (
 						<a
 							href={link.href}
-							class="text-medium-sm font-medium text-grey-10"
+							class="text-medium-sm font-medium text-grey-10 transition-colors duration-200"
 						>
 							{link.label}
 						</a>
@@ -37,7 +37,7 @@ import { primaryNav as links } from "@constants/nav.ts";
 				}
 			</nav>
 			<div class="hidden flex-1 justify-end lg:flex">
-				<Button label="Book a 15-Min Call">
+				<Button label="Book a 15-Min Call" data-invert="cta">
 					<MeetIcon slot="icon" class="h-3 w-[14px]" />
 				</Button>
 			</div>
@@ -48,7 +48,7 @@ import { primaryNav as links } from "@constants/nav.ts";
 			>
 				<span class="relative block">
 					<span
-						class="menu-label-open block text-body-sm text-grey-10"
+						class="menu-label-open block text-body-sm text-grey-10 transition-colors duration-200"
 						>Menu</span
 					>
 					<span
