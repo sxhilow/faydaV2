@@ -1,12 +1,12 @@
 import { gsap } from "gsap";
 
 const STRIP_ID = "sweep-strip";
-const ACTIVE_HEIGHT = 280;
-const COLLAPSED_HEIGHT = 8;
-const MOVE_DURATION = 0.3;
-const EXPAND_DURATION = 0.5;
+const ACTIVE_HEIGHT = 180;
+const COLLAPSED_HEIGHT = 1;
+const EXPAND_DURATION = 0.4;
 const COLLAPSE_DURATION = 0.4;
-const IDLE_TIMEOUT = 120;
+const FOLLOW_DURATION = 2;
+const IDLE_TIMEOUT = 800;
 const OVERLAP_RATIO = 0.4;
 
 interface InvertTarget {
@@ -15,8 +15,16 @@ interface InvertTarget {
 	inverted: boolean;
 }
 
+interface ClipTarget {
+	el: HTMLElement;
+	clone: HTMLElement;
+	replace?: boolean;
+	text?: HTMLElement;
+	blue?: HTMLElement;
+}
+
 const invertClass =
-	(darkClass: string, lightClass: string) => (el: HTMLElement, inverted: boolean) => {
+	(el: HTMLElement, darkClass: string, lightClass: string) => (inverted: boolean) => {
 		el.classList.toggle(darkClass, !inverted);
 		el.classList.toggle(lightClass, inverted);
 	};
@@ -34,66 +42,123 @@ export function initSweep(): void {
 	}
 
 	const heading = document.querySelector<HTMLElement>('[data-invert="heading"]');
-	const cta = document.querySelector<HTMLElement>('[data-invert="cta"]');
-	const logoLink = document.querySelector<HTMLElement>('a[aria-label="Fayda Studio home"]');
-	const logoDark = document.querySelector<HTMLElement>(".menu-logo-dark");
-	const logoLight = document.querySelector<HTMLElement>(".menu-logo-light");
-	const navLinks = Array.from(
-		document.querySelectorAll<HTMLElement>('nav[aria-label="Primary"] a'),
-	);
-	const menuLabel = document.querySelector<HTMLElement>(".menu-label-open");
+	const menuLogo = document.querySelector<HTMLElement>(".menu-logo");
+	const logoSahil = document.querySelector<HTMLElement>(".menu-logo-sahil");
 
 	const targets: InvertTarget[] = [];
+	const clips: ClipTarget[] = [];
 
-	if (heading) {
-		targets.push({
-			el: heading,
-			apply: invertClass("text-grey-13", "text-white"),
-			inverted: false,
+	document.querySelectorAll<HTMLElement>("[data-invert-clip]").forEach((el) => {
+		const darkClass = el.dataset.invertDark;
+		const lightClass = el.dataset.invertLight;
+		if (!darkClass || !lightClass) return;
+
+		const replace = el.dataset.invertReplace;
+		const clone = el.cloneNode(true) as HTMLElement;
+		clone.removeAttribute("data-invert");
+		clone.removeAttribute("data-invert-clip");
+		clone.removeAttribute("data-invert-dark");
+		clone.removeAttribute("data-invert-light");
+		clone.removeAttribute("data-invert-replace");
+		clone.removeAttribute("data-pill");
+		clone.querySelectorAll("[data-pill-side]").forEach((node) => {
+			node.removeAttribute("data-pill-side");
 		});
-	}
-	if (cta) {
-		targets.push({
-			el: cta,
-			apply: invertClass("text-grey-1", "text-white"),
-			inverted: false,
+
+		const darkClasses = darkClass.split(/\s+/).filter(Boolean);
+		const lightClasses = lightClass.split(/\s+/).filter(Boolean);
+		const nodes = [clone, ...Array.from(clone.querySelectorAll("*"))];
+		nodes.forEach((node) => {
+			darkClasses.forEach((c) => node.classList.remove(c));
+			lightClasses.forEach((c) => node.classList.add(c));
 		});
-	}
-	if (logoLink && logoDark && logoLight) {
+
+		if (replace) {
+			const label = clone.querySelector<HTMLElement>("[data-pill-label]");
+			if (label) {
+				label.textContent = replace;
+				clone.classList.add("justify-center");
+			} else {
+				clone.innerHTML = replace.split("||").join("<br>");
+			}
+		}
+
+		if (replace) {
+			const wrapper = document.createElement("div");
+			wrapper.className = "absolute inset-0 pointer-events-none";
+			wrapper.setAttribute("aria-hidden", "true");
+
+			const blue = document.createElement("div");
+			blue.className = "absolute inset-0 bg-blue-500";
+			blue.style.boxShadow = "0 0 0 10px #2553ff";
+			blue.style.clipPath = "inset(100%)";
+
+			clone.classList.add("absolute", "inset-0");
+			clone.style.clipPath = "inset(100%)";
+
+			wrapper.append(blue, clone);
+			el.classList.add("relative");
+			el.appendChild(wrapper);
+			clips.push({
+				el,
+				clone: wrapper,
+				text: clone,
+				blue,
+				replace: true,
+			});
+			return;
+		}
+
+		clone.classList.add("absolute", "inset-0", "pointer-events-none");
+		clone.setAttribute("aria-hidden", "true");
+		clone.style.clipPath = "inset(100%)";
+
+		el.classList.add("relative");
+		el.appendChild(clone);
+		clips.push({ el, clone, replace: false });
+	});
+
+	document.querySelectorAll<HTMLElement>("[data-invert]").forEach((el) => {
+		if (el.hasAttribute("data-invert-clip")) return;
+		const darkClass = el.dataset.invertDark;
+		const lightClass = el.dataset.invertLight;
+		if (!darkClass || !lightClass) return;
 		targets.push({
-			el: logoLink,
-			apply: (inverted) => {
-				gsap.to(logoDark, { opacity: inverted ? 0 : 1, duration: 0.25, overwrite: "auto" });
-				gsap.to(logoLight, { opacity: inverted ? 1 : 0, duration: 0.25, overwrite: "auto" });
-			},
-			inverted: false,
-		});
-	}
-	navLinks.forEach((link) => {
-		targets.push({
-			el: link,
-			apply: invertClass("text-grey-10", "text-white"),
+			el,
+			apply: invertClass(el, darkClass, lightClass),
 			inverted: false,
 		});
 	});
-	if (menuLabel) {
-		targets.push({
-			el: menuLabel,
-			apply: invertClass("text-grey-10", "text-white"),
-			inverted: false,
-		});
+
+	if (menuLogo && logoSahil) {
+		logoSahil.style.clipPath = "inset(100%)";
+		logoSahil.style.opacity = "1";
+
+		const wrapper = document.createElement("div");
+		wrapper.className = "absolute inset-0 pointer-events-none";
+		wrapper.setAttribute("aria-hidden", "true");
+
+		const blue = document.createElement("div");
+		blue.className = "absolute inset-0 bg-blue-500";
+		blue.style.boxShadow = "0 0 0 20px #2553ff";
+		blue.style.clipPath = "inset(100%)";
+
+		wrapper.append(blue, logoSahil);
+		menuLogo.appendChild(wrapper);
+		clips.push({ el: menuLogo, clone: wrapper, blue, text: logoSahil, replace: true });
 	}
 
-	if (!targets.length) return;
+	if (!targets.length && !clips.length) return;
 
-	const hero = document.getElementById("top");
 	const menuToggle = document.getElementById("menu-toggle") as HTMLInputElement | null;
 
 	let running = false;
 	let revealed = false;
+	let following = false;
 	let rafId = 0;
 	let idleTimer: number | undefined;
-	let heroVisible = hero !== null;
+	let targetY = 0;
+	let active = heading !== null;
 	let menuOpen = false;
 
 	const applyTarget = (target: InvertTarget, inverted: boolean) => {
@@ -112,11 +177,56 @@ export function initSweep(): void {
 		return overlap >= rect.height * OVERLAP_RATIO;
 	};
 
+	const hideClip = (clip: ClipTarget) => {
+		if (clip.replace) {
+			if (clip.blue) clip.blue.style.clipPath = "inset(100%)";
+			if (clip.text) clip.text.style.clipPath = "inset(100%)";
+		} else {
+			clip.clone.style.clipPath = "inset(100%)";
+		}
+	};
+
+	const clipToStrip = (clip: ClipTarget, stripRect: DOMRect) => {
+		const rect = clip.clone.getBoundingClientRect();
+		if (rect.width <= 0 || rect.height <= 0) {
+			hideClip(clip);
+			return;
+		}
+
+		// Expand intersection check box to ensure we don't hide while descenders/ascenders overlap
+		const top = Math.max(stripRect.top, rect.top - 40);
+		const bottom = Math.min(stripRect.bottom, rect.bottom + 40);
+		const left = Math.max(stripRect.left, rect.left - 40);
+		const right = Math.min(stripRect.right, rect.right + 40);
+		if (bottom <= top || right <= left) {
+			hideClip(clip);
+			return;
+		}
+
+		// Use polygon to exactly match the strip's rectangle on the screen,
+		// allowing clipping outside the element's bounding box (for descenders/ascenders).
+		const y1 = stripRect.top - rect.top;
+		const y2 = stripRect.bottom - rect.top;
+		const x1 = stripRect.left - rect.left;
+		const x2 = stripRect.right - rect.left;
+		const poly = `polygon(${x1}px ${y1}px, ${x2}px ${y1}px, ${x2}px ${y2}px, ${x1}px ${y2}px)`;
+
+		if (clip.replace) {
+			if (clip.blue) clip.blue.style.clipPath = poly;
+			if (clip.text) clip.text.style.clipPath = poly;
+		} else {
+			clip.clone.style.clipPath = poly;
+		}
+	};
+
+	const resetClips = () => clips.forEach(hideClip);
+
 	const loop = () => {
 		rafId = 0;
 		if (!running) return;
 		const stripRect = strip.getBoundingClientRect();
 		targets.forEach((t) => applyTarget(t, isOverlapped(stripRect, t.el)));
+		clips.forEach((c) => clipToStrip(c, stripRect));
 		rafId = requestAnimationFrame(loop);
 	};
 
@@ -130,24 +240,11 @@ export function initSweep(): void {
 		if (rafId) cancelAnimationFrame(rafId);
 		rafId = 0;
 		resetTargets();
-	};
-
-	const hideStrip = () => {
-		window.clearTimeout(idleTimer);
-		gsap.to(strip, { opacity: 0, duration: 0.3, overwrite: "auto" });
-		stop();
-	};
-
-	const expand = () => {
-		gsap.to(strip, {
-			height: ACTIVE_HEIGHT,
-			duration: EXPAND_DURATION,
-			ease: "power3.out",
-			overwrite: "auto",
-		});
+		resetClips();
 	};
 
 	const collapse = () => {
+		following = false;
 		gsap.to(strip, {
 			height: COLLAPSED_HEIGHT,
 			duration: COLLAPSE_DURATION,
@@ -156,14 +253,48 @@ export function initSweep(): void {
 		});
 	};
 
+	const beginFollow = () => {
+		following = true;
+		gsap.to(strip, {
+			height: ACTIVE_HEIGHT,
+			duration: EXPAND_DURATION,
+			ease: "power3.out",
+			overwrite: "auto",
+		});
+		gsap.to(strip, {
+			y: targetY,
+			duration: FOLLOW_DURATION,
+			ease: "power3.out",
+			overwrite: "auto",
+		});
+	};
+
+	const hideStrip = () => {
+		window.clearTimeout(idleTimer);
+		gsap.to(strip, { opacity: 0, duration: 0., overwrite: "auto" });
+		stop();
+	};
+
 	const onPointerMove = (e: PointerEvent) => {
+		targetY = e.clientY;
+
 		if (!revealed) {
 			revealed = true;
 			gsap.to(strip, { opacity: 1, duration: 0.3, overwrite: "auto" });
 			start();
 		}
-		gsap.to(strip, { y: e.clientY, duration: MOVE_DURATION, ease: "power3.out", overwrite: "auto" });
-		expand();
+
+		if (!following) {
+			beginFollow();
+		} else {
+			gsap.to(strip, {
+				y: targetY,
+				duration: FOLLOW_DURATION,
+				ease: "power3.out",
+				overwrite: "auto",
+			});
+		}
+
 		window.clearTimeout(idleTimer);
 		idleTimer = window.setTimeout(collapse, IDLE_TIMEOUT);
 	};
@@ -174,7 +305,7 @@ export function initSweep(): void {
 	};
 
 	const sync = () => {
-		const shouldRun = heroVisible && !menuOpen;
+		const shouldRun = active && !menuOpen;
 		if (shouldRun) {
 			window.addEventListener("pointermove", onPointerMove, { passive: true });
 			window.addEventListener("pointerleave", onPointerLeave);
@@ -182,20 +313,21 @@ export function initSweep(): void {
 			window.removeEventListener("pointermove", onPointerMove);
 			window.removeEventListener("pointerleave", onPointerLeave);
 			revealed = false;
+			following = false;
 			hideStrip();
 		}
 	};
 
 	gsap.set(strip, { opacity: 0 });
 
-	if (hero) {
+	if (heading) {
 		new IntersectionObserver(
 			(entries) => {
-				heroVisible = entries[0].isIntersecting;
+				active = entries[0].isIntersecting;
 				sync();
 			},
 			{ threshold: 0 },
-		).observe(hero);
+		).observe(heading);
 	}
 
 	menuToggle?.addEventListener("change", () => {
