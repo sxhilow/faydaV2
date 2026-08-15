@@ -25,9 +25,17 @@ const { title = "Fayda Studio — Websites built from the ground up", descriptio
 	</head>
 	<body class="bg-grey-2 overflow-x-clip has-checked:overflow-hidden">
 		<Navbar />
-		<main class="mx-auto w-full max-w-7xl md:px-6 xl:px-0">
-			<slot />
-		</main>
-		<Footer />
+		<div id="smooth-wrapper">
+			<div id="smooth-content">
+				<div class="h-24 lg:h-28" aria-hidden="true" />
+				<main class="mx-auto w-full max-w-7xl md:px-6 xl:px-0">
+					<slot />
+				</main>
+				<Footer />
+			</div>
+		</div>
+		<script>
+			import "@animations/index";
+		</script>
 	</body>
 </html>
