@@ -4,22 +4,37 @@ interface Props {
 	tone?: "dark" | "blue";
 	size?: "md" | "sm";
 	className?: string;
+	invertible?: boolean;
 }
 
-	const { label, tone = "dark", size = "md", className = "" } = Astro.props;
+	const { label, tone = "dark", size = "md", className = "", invertible = false } = Astro.props;
 
 	const bracket = tone === "dark" ? "text-blue-500" : "text-blue-300";
 	const labelClass = tone === "dark" ? "text-grey-10" : "text-grey-2";
 	const labelSize = size === "md" ? "text-body-sm md:text-body" : "text-body-sm";
+
+	const invertAttrs = invertible
+		? {
+				"data-invert": "pill",
+				"data-invert-clip": "",
+				"data-invert-dark": `${bracket} ${labelClass}`,
+				"data-invert-light": "text-white",
+				"data-invert-replace": "Hi, I'm Sahil",
+			}
+		: {};
 ---
 
-<span data-pill class={`inline-flex items-center gap-2 ${className}`}>
+<span
+	data-pill
+	class={`inline-flex items-center gap-2 ${className}`}
+	{...invertAttrs}
+>
 	<span
 		aria-hidden="true"
 		data-pill-side="left"
 		class={`font-display text-2xl font-semibold leading-[1.3] md:text-3xl ${bracket}`}
 	>[</span>
-	<span class={`${labelSize} ${labelClass}`}>{label}</span>
+	<span class={`${labelSize} ${labelClass}`} data-pill-label>{label}</span>
 	<span
 		aria-hidden="true"
 		data-pill-side="right"
