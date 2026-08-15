@@ -1,0 +1,76 @@
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/urbanist";
+@import "tailwindcss";
+
+@theme {
+	--font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+	--font-display: "Urbanist Variable", ui-sans-serif, system-ui, sans-serif;
+
+	/* Greys (Grey/*) */
+	--color-grey-1: #ffffff;
+	--color-grey-2: #fdfdfd;
+	--color-grey-3: #F5F5F5;
+	--color-grey-4: #f0f0f0;
+	--color-grey-5: #dadadb;
+	--color-grey-8: #605f61;
+	--color-grey-10: #2f2e30;
+	--color-grey-12: #1e1d1f;
+	--color-grey-13: #0a090c;
+
+	/* Blues (Blue/*, brand/*, ts1/ts2, logo dot) */
+	--color-blue-50: #e9eeff;
+	--color-blue-100: #bbcaff;
+	--color-blue-200: #9bb0ff;
+	--color-blue-300: #6d8cff;
+	--color-blue-400: #5175ff;
+	--color-blue-500: #2553ff;
+	--color-blue-600: #2868fd;
+
+	/* Type scale */
+	--text-h1: 4rem;
+	--text-h1--line-height: 1.15;
+	--text-h1--letter-spacing: -0.02em;
+	--text-h2: 3rem;
+	--text-h2--line-height: 1.2;
+	--text-h2--letter-spacing: -0.01em;
+	--text-h3: 2rem;
+	--text-h3--line-height: 1.3;
+	--text-h3--letter-spacing: -0.003em;
+	--text-h4: 1.25rem;
+	--text-h4--line-height: 1.6;
+	--text-h4--letter-spacing: -0.02em;
+	--text-body: 1rem;
+	--text-body--line-height: 1.6;
+	--text-body--letter-spacing: -0.02em;
+	--text-body-sm: 0.875rem;
+	--text-body-sm--line-height: 1.6;
+	--text-body-sm--letter-spacing: -0.02em;
+	--text-medium: 1rem;
+	--text-medium--line-height: 1.6;
+	--text-medium--letter-spacing: -0.02em;
+	--text-medium-sm: 0.875rem;
+	--text-medium-sm--line-height: 1.6;
+	--text-medium-sm--letter-spacing: -0.02em;
+	--text-caption: 0.75rem;
+	--text-caption--line-height: 1.4;
+	--text-caption--letter-spacing: -0.02em;
+
+	/* Mobile type scale */
+	--text-mobile-h1: 2.5rem;
+	--text-mobile-h1--line-height: 1;
+	--text-mobile-h1--letter-spacing: -0.02em;
+	--text-mobile-h2: 2rem;
+	--text-mobile-h2--line-height: 1.2;
+	--text-mobile-h2--letter-spacing: -0.02em;
+	--text-mobile-h4: 1.25rem;
+	--text-mobile-h4--line-height: 1.3;
+	--text-mobile-h4--letter-spacing: -0.02em;
+
+	/* Radii */
+	--radius-pill: 999px;
+
+	/* Shadows */
+	--shadow-card: 0 0 8px 0 rgb(0 0 0 / 0.15);
+	--shadow-dark: 0 0 0 2px rgb(10 9 12), 0 1px 2px 0 rgb(10 9 12 / 0.1),
+		inset 0 1px 16px 0 rgb(255 255 255 / 0.1);
+}
