@@ -2,6 +2,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollSmoother } from "gsap/ScrollSmoother";
 import { initMarquee } from "@animations/marquee";
+import { initPills } from "@animations/pill";
 
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 ScrollTrigger.config({ ignoreMobileResize: true });
@@ -59,4 +60,5 @@ if (!prefersReducedMotion) {
 	});
 
 	initMarquee();
+	initPills();
 }
