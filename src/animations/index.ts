@@ -1,11 +1,13 @@
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollSmoother } from "gsap/ScrollSmoother";
+import { SplitText } from "gsap/SplitText";
 import { initMarquee } from "@animations/marquee";
 import { initPills } from "@animations/pill";
 import { initSweep } from "@animations/sweep";
+import { initWhyUs } from "@animations/whyus";
 
-gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
+gsap.registerPlugin(ScrollTrigger, ScrollSmoother, SplitText);
 ScrollTrigger.config({ ignoreMobileResize: true });
 
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -67,6 +69,7 @@ if (!prefersReducedMotion) {
 	initMarquee();
 	initPills();
 	initSweep();
+	initWhyUs();
 
 	if (header && navBg && heroSection) {
 		let onHero = true;
