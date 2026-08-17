@@ -337,7 +337,6 @@ export function initSweep(): void {
 
 		if (!revealed) {
 			revealed = true;
-			gsap.to(strip, { opacity: 1, duration: 0.3, overwrite: "auto" });
 			start();
 		}
 
@@ -371,11 +370,11 @@ export function initSweep(): void {
 			window.removeEventListener("pointerleave", onPointerLeave);
 			revealed = false;
 			following = false;
-			hideStrip();
+			collapseStrip();
 		}
 	};
 
-	gsap.set(strip, { opacity: 0 });
+	gsap.set(strip, { opacity: 1, height: COLLAPSED_HEIGHT, y: window.innerHeight / 2 });
 
 	if (heading) {
 		new IntersectionObserver(
