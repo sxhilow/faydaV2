@@ -2,15 +2,39 @@
 interface Props {
 	title: string;
 	description: string;
+	borderClass?: string;
 	className?: string;
 }
 
-const { title, description, className = "" } = Astro.props;
+const { title, description, borderClass = "", className = "" } = Astro.props;
+
+let finalBorderClass = borderClass;
+let borderFillClass = borderClass.replace(/border-blue-400/g, "border-blue-50");
+
+if (className.includes("col-start-1")) {
+	finalBorderClass += " border-l-transparent";
+	borderFillClass += " border-l-transparent";
+}
+if (className.includes("col-start-4")) {
+	finalBorderClass += " border-r-transparent";
+	borderFillClass += " border-r-transparent";
+}
 ---
 
 <article
-	class={`flex h-full flex-col gap-2.5 p-8 ${className}`}
+	class={`relative flex h-full flex-col gap-2.5 p-8 ${className}`}
 >
 	<h3 class="font-display font-bold text-h4 text-grey-2">{title}</h3>
 	<p class="text-body text-grey-2">{description}</p>
+	<div
+		class={`absolute inset-0 pointer-events-none ${finalBorderClass}`}
+		data-border-overlay
+		aria-hidden="true"
+	></div>
+	<div
+		class={`absolute inset-0 pointer-events-none ${borderFillClass}`}
+		style="clip-path: polygon(0 0, 0 0, 0 0, 0 0, 0 0)"
+		data-border-fill
+		aria-hidden="true"
+	></div>
 </article>
