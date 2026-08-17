@@ -8,6 +8,7 @@ const COLLAPSE_DURATION = 0.4;
 const FOLLOW_DURATION = 2;
 const IDLE_TIMEOUT = 800;
 const OVERLAP_RATIO = 0.4;
+const FILL_LERP = 0.12;
 
 interface InvertTarget {
 	el: HTMLElement;
@@ -47,6 +48,7 @@ export function initSweep(): void {
 	}
 
 	const heading = document.querySelector<HTMLElement>('[data-invert="heading"]');
+	const whyUs = document.getElementById("why-us");
 	const menuLogo = document.querySelector<HTMLElement>(".menu-logo");
 	const logoSahil = document.querySelector<HTMLElement>(".menu-logo-sahil");
 
@@ -190,6 +192,10 @@ export function initSweep(): void {
 	let targetY = 0;
 	let active = heading !== null;
 	let menuOpen = false;
+	let scrollFilling = false;
+	let fillStartY = 0;
+	let fillProgress = 0;
+	let lastCursorY = window.innerHeight / 2;
 
 	const applyTarget = (target: InvertTarget, inverted: boolean) => {
 		if (target.inverted === inverted) return;
@@ -278,11 +284,70 @@ export function initSweep(): void {
 
 	const loop = () => {
 		rafId = 0;
-		if (!running) return;
-		const stripRect = strip.getBoundingClientRect();
-		targets.forEach((t) => applyTarget(t, isOverlapped(stripRect, t.el)));
-		clips.forEach((c) => clipToStrip(c, stripRect));
-		borders.forEach((b) => clipBorder(b, stripRect));
+		if (!running && !scrollFilling) return;
+
+		let rectRaw = strip.getBoundingClientRect();
+		let stripBox = {
+			top: rectRaw.top,
+			bottom: rectRaw.bottom,
+			left: rectRaw.left,
+			right: rectRaw.right,
+			width: rectRaw.width,
+			height: rectRaw.height
+		};
+
+		if (scrollFilling && whyUs) {
+			const rect = whyUs.getBoundingClientRect();
+			const vh = window.innerHeight;
+			const sectionTop = Math.max(0, rect.top);
+			const sectionBottom = Math.min(vh, rect.bottom);
+
+			if (sectionBottom > sectionTop) {
+				// Base target progress strictly on how much the section has scrolled up
+				const targetProgress = Math.max(0, Math.min(1, (vh - sectionTop) / vh));
+				fillProgress += (targetProgress - fillProgress) * FILL_LERP;
+
+				const topClip = fillStartTop + (sectionTop - fillStartTop) * fillProgress;
+				const bottomClip =
+					(vh - fillStartBottom) +
+					((vh - sectionBottom) - (vh - fillStartBottom)) * fillProgress;
+
+				strip.style.clipPath = `inset(${topClip}px 0 ${Math.max(0, bottomClip)}px 0)`;
+
+				const visibleTop = topClip;
+				const visibleBottom = vh - Math.max(0, bottomClip);
+				stripBox.top = visibleTop;
+				stripBox.bottom = visibleBottom;
+				stripBox.height = visibleBottom - visibleTop;
+			} else {
+				scrollFilling = false;
+				strip.style.clipPath = "";
+				strip.hidden = true;
+				gsap.set(strip, { height: COLLAPSED_HEIGHT, y: lastCursorY });
+				// When leaving the section, transition back to the cursor if the strip should still be active
+				if (active) {
+					strip.hidden = false;
+					running = true;
+					following = true;
+					revealed = true;
+					gsap.to(strip, {
+						height: ACTIVE_HEIGHT,
+						y: lastCursorY,
+						duration: EXPAND_DURATION,
+						ease: "power3.out",
+						overwrite: "auto",
+					});
+					if (!rafId) rafId = requestAnimationFrame(loop);
+				}
+			}
+		}
+
+		if (running) {
+			targets.forEach((t) => applyTarget(t, isOverlapped(stripBox as DOMRect, t.el)));
+			clips.forEach((c) => clipToStrip(c, stripBox as DOMRect));
+			borders.forEach((b) => clipBorder(b, stripBox as DOMRect));
+		}
+
 		rafId = requestAnimationFrame(loop);
 	};
 
@@ -293,14 +358,45 @@ export function initSweep(): void {
 
 	const stop = () => {
 		running = false;
-		if (rafId) cancelAnimationFrame(rafId);
-		rafId = 0;
+		if (!scrollFilling) {
+			if (rafId) cancelAnimationFrame(rafId);
+			rafId = 0;
+		}
 		resetTargets();
 		resetClips();
 		resetBorders();
 	};
 
+	let fillStartTop = 0;
+	let fillStartBottom = 0;
+
+	const startFill = () => {
+		if (scrollFilling) return;
+		scrollFilling = true;
+		running = false;
+
+		const rect = strip.getBoundingClientRect();
+		const stripVisible = !strip.hidden && rect.height > 0;
+		fillStartTop = stripVisible ? rect.top : lastCursorY;
+		fillStartBottom = stripVisible ? rect.bottom : lastCursorY + COLLAPSED_HEIGHT;
+		fillProgress = 0;
+
+		gsap.killTweensOf(strip);
+		running = false;
+		resetTargets();
+		resetClips();
+		resetBorders();
+		strip.hidden = false;
+
+		const vh = window.innerHeight;
+		strip.style.clipPath = `inset(${fillStartTop}px 0 ${Math.max(0, vh - fillStartBottom)}px 0)`;
+		gsap.set(strip, { height: vh, y: 0, opacity: 1 });
+
+		if (!rafId) rafId = requestAnimationFrame(loop);
+	};
+
 	const collapse = () => {
+		if (scrollFilling) return;
 		following = false;
 		gsap.to(strip, {
 			height: COLLAPSED_HEIGHT,
@@ -311,6 +407,7 @@ export function initSweep(): void {
 	};
 
 	const beginFollow = () => {
+		if (scrollFilling) return;
 		following = true;
 		gsap.to(strip, {
 			height: ACTIVE_HEIGHT,
@@ -333,10 +430,12 @@ export function initSweep(): void {
 	};
 
 	const onPointerMove = (e: PointerEvent) => {
+		if (scrollFilling) return;
 		targetY = e.clientY;
 
 		if (!revealed) {
 			revealed = true;
+			gsap.set(strip, { y: targetY });
 			start();
 		}
 
@@ -363,6 +462,7 @@ export function initSweep(): void {
 	const sync = () => {
 		const shouldRun = active && !menuOpen;
 		if (shouldRun) {
+			strip.hidden = false;
 			window.addEventListener("pointermove", onPointerMove, { passive: true });
 			window.addEventListener("pointerleave", onPointerLeave);
 		} else {
@@ -373,6 +473,10 @@ export function initSweep(): void {
 			collapseStrip();
 		}
 	};
+
+	window.addEventListener("pointermove", (e) => {
+		lastCursorY = e.clientY;
+	}, { passive: true });
 
 	gsap.set(strip, { opacity: 1, height: COLLAPSED_HEIGHT, y: window.innerHeight / 2 });
 
@@ -392,4 +496,13 @@ export function initSweep(): void {
 	});
 
 	sync();
+
+	if (whyUs) {
+		new IntersectionObserver(
+			(entries) => {
+				if (entries[0].isIntersecting) startFill();
+			},
+			{ threshold: 0 },
+		).observe(whyUs);
+	}
 }
