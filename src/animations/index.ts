@@ -30,6 +30,9 @@ const OPEN_STATE: Record<string, gsap.TweenVars> = {
 
 const menuToggle = document.getElementById("menu-toggle") as HTMLInputElement | null;
 const mobileMenu = document.getElementById("mobile-menu");
+const header = document.querySelector<HTMLElement>("header");
+const navBg = header?.querySelector<HTMLElement>(".absolute.inset-0.z-10");
+const heroSection = document.getElementById("top");
 
 const syncMenu = (checked: boolean, duration: number) => {
 	if (mobileMenu) mobileMenu.inert = !checked;
@@ -43,6 +46,7 @@ const syncMenu = (checked: boolean, duration: number) => {
 menuToggle?.addEventListener("change", () => {
 	ScrollSmoother.get()?.paused(menuToggle.checked);
 	syncMenu(menuToggle.checked, prefersReducedMotion ? 0 : 0.3);
+	if (menuToggle.checked && header) gsap.set(header, { y: 0 });
 });
 
 syncMenu(menuToggle?.checked ?? false, 0);
@@ -63,4 +67,61 @@ if (!prefersReducedMotion) {
 	initMarquee();
 	initPills();
 	initSweep();
+
+	if (header && navBg && heroSection) {
+		let onHero = true;
+		let navHidden = false;
+		let isTransitioning = false;
+
+		new IntersectionObserver(
+			(entries) => {
+				const wasOnHero = onHero;
+				onHero = entries[0].isIntersecting;
+				navBg.classList.toggle("bg-grey-2", !onHero);
+
+				// Smoothly hide the navbar when scrolling up into the hero section
+				if (onHero && !wasOnHero && !navHidden) {
+					isTransitioning = true;
+					gsap.to(header, {
+						y: "-100%",
+						opacity: 0,
+						duration: 0.4,
+						ease: "power2.inOut",
+						onComplete: () => {
+							isTransitioning = false;
+							navHidden = true;
+							gsap.set(header, { opacity: 1 });
+						},
+					});
+				}
+			},
+			{ threshold: 0 },
+		).observe(heroSection);
+
+		// While the hero is in view, the navbar scrolls with the page
+		// instead of staying pinned to the top of the viewport.
+		gsap.ticker.add(() => {
+			if (!onHero || menuToggle?.checked || isTransitioning) return;
+			gsap.set(header, { y: -smoother.scrollTop() });
+			navHidden = true;
+		});
+
+		ScrollTrigger.create({
+			start: "top top",
+			end: 99999,
+			onUpdate: (self) => {
+				if (onHero || menuToggle?.checked) return;
+
+				if (self.direction === 1 && !navHidden) {
+					gsap.to(header, { y: "-100%", duration: 0.5, ease: "power2.inOut" });
+					navHidden = true;
+				} else if (self.direction === -1 && navHidden) {
+					// Ensure it slides down from just above the viewport, not from a huge negative position
+					gsap.set(header, { y: "-100%" });
+					gsap.to(header, { y: 0, duration: 0.5, ease: "power2.inOut" });
+					navHidden = false;
+				}
+			},
+		});
+	}
 }
