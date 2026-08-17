@@ -68,7 +68,8 @@ import { marquee } from "@constants/marquee.ts";
 				[...marquee, ...marquee].map((item, index) => (
 					<figure
 						aria-hidden={index >= marquee.length}
-						class="w-[340px] shrink-0 bg-grey-1 border-r border-grey-5 p-4 md:w-[508px] lg:w-[630px]"
+						class="w-[340px] shrink-0 border-r border-grey-5 p-4 md:w-[508px] lg:w-[630px]"
+						data-sweep-border
 					>
 						<Image
 							src={item.image}

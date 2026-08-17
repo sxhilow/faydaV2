@@ -17,7 +17,7 @@ const { name, year, tags, description, image } = Astro.props;
 ---
 
 <article class="grid items-end border-t border-grey-5 bg-grey-2 lg:grid-cols-2">
-	<figure class="px-8 pt-8 lg:border-r lg:border-grey-5 bg-blue-50">
+	<figure class="px-8 pt-8 lg:border-r lg:border-grey-5 bg-blue-50" data-sweep-border>
 		<Image
 			src={image}
 			alt={`${name} — project preview`}

@@ -23,6 +23,11 @@ interface ClipTarget {
 	blue?: HTMLElement;
 }
 
+interface BorderTarget {
+	el: HTMLElement;
+	overlay: HTMLElement;
+}
+
 const invertClass =
 	(el: HTMLElement, darkClass: string, lightClass: string) => (inverted: boolean) => {
 		el.classList.toggle(darkClass, !inverted);
@@ -148,7 +153,32 @@ export function initSweep(): void {
 		clips.push({ el: menuLogo, clone: wrapper, blue, text: logoSahil, replace: true });
 	}
 
-	if (!targets.length && !clips.length) return;
+	const borders: BorderTarget[] = [];
+
+	document.querySelectorAll<HTMLElement>("[data-sweep-border]").forEach((el) => {
+		el.classList.add("relative");
+		const overlay = document.createElement("div");
+		overlay.className = "absolute border border-blue-400 pointer-events-none";
+		overlay.setAttribute("aria-hidden", "true");
+		overlay.style.clipPath = "inset(100%)";
+		const cs = getComputedStyle(el);
+		overlay.style.top = `-${cs.paddingTop}`;
+		overlay.style.right = `-${cs.paddingRight}`;
+		overlay.style.bottom = `-${cs.paddingBottom}`;
+		overlay.style.left = `-${cs.paddingLeft}`;
+		el.appendChild(overlay);
+		borders.push({ el, overlay });
+	});
+
+	const navBorderSweep = document.getElementById("nav-border-sweep");
+	if (navBorderSweep) {
+		const navHeader = navBorderSweep.closest("header");
+		if (navHeader) {
+			borders.push({ el: navHeader, overlay: navBorderSweep });
+		}
+	}
+
+	if (!targets.length && !clips.length && !borders.length) return;
 
 	const menuToggle = document.getElementById("menu-toggle") as HTMLInputElement | null;
 
@@ -221,12 +251,38 @@ export function initSweep(): void {
 
 	const resetClips = () => clips.forEach(hideClip);
 
+	const hideBorder = (border: BorderTarget) => {
+		border.overlay.style.clipPath = "inset(100%)";
+	};
+
+	const clipBorder = (border: BorderTarget, stripRect: DOMRect) => {
+		const rect = border.el.getBoundingClientRect();
+		if (rect.width <= 0 || rect.height <= 0) {
+			hideBorder(border);
+			return;
+		}
+
+		const overlapTop = Math.max(stripRect.top, rect.top);
+		const overlapBottom = Math.min(stripRect.bottom, rect.bottom);
+		if (overlapBottom <= overlapTop) {
+			hideBorder(border);
+			return;
+		}
+
+		const top = overlapTop - rect.top;
+		const bottom = rect.bottom - overlapBottom;
+		border.overlay.style.clipPath = `inset(${top}px 0 ${bottom}px 0)`;
+	};
+
+	const resetBorders = () => borders.forEach(hideBorder);
+
 	const loop = () => {
 		rafId = 0;
 		if (!running) return;
 		const stripRect = strip.getBoundingClientRect();
 		targets.forEach((t) => applyTarget(t, isOverlapped(stripRect, t.el)));
 		clips.forEach((c) => clipToStrip(c, stripRect));
+		borders.forEach((b) => clipBorder(b, stripRect));
 		rafId = requestAnimationFrame(loop);
 	};
 
@@ -241,6 +297,7 @@ export function initSweep(): void {
 		rafId = 0;
 		resetTargets();
 		resetClips();
+		resetBorders();
 	};
 
 	const collapse = () => {
@@ -269,9 +326,9 @@ export function initSweep(): void {
 		});
 	};
 
-	const hideStrip = () => {
+	const collapseStrip = () => {
 		window.clearTimeout(idleTimer);
-		gsap.to(strip, { opacity: 0, duration: 0., overwrite: "auto" });
+		collapse();
 		stop();
 	};
 
