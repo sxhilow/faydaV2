@@ -2,11 +2,12 @@
 interface Props {
 	id?: string;
 	className?: string;
+	style?: string;
 }
 
-	const { id, className = "bg-grey-2 py-20 lg:py-32" } = Astro.props;
+	const { id, className = "bg-grey-2 py-20 lg:py-32", style = "" } = Astro.props;
 ---
 
-<section id={id} class={className}>
+<section id={id} class={className} style={style}>
 	<slot />
 </section>
