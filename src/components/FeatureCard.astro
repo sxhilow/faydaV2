@@ -8,7 +8,9 @@ interface Props {
 const { title, description, className = "" } = Astro.props;
 ---
 
-<article class={`flex h-full flex-col gap-2.5 bg-blue-500 p-8 ${className}`}>
-	<h3 class="font-display font-bold text-h4 text-grey-1">{title}</h3>
-	<p class="text-body text-grey-1">{description}</p>
+<article
+	class={`flex h-full flex-col gap-2.5 p-8 ${className}`}
+>
+	<h3 class="font-display font-bold text-h4 text-grey-2">{title}</h3>
+	<p class="text-body text-grey-2">{description}</p>
 </article>
