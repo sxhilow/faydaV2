@@ -1,5 +1,4 @@
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
 
 const BLUE_50 = "#e9eeff";
@@ -57,11 +56,14 @@ export function initWhyUs(): void {
 	const RIGHT_FILL_FRACTION = 0.15;
 
 	if (borderFills.length) {
+		const revealDistance = window.innerHeight;
+		const totalDistance = CARD_PIN_DISTANCE + revealDistance;
+
 		const cardsTl = gsap.timeline({
 			scrollTrigger: {
 				trigger: cardsEl,
 				start: "center center",
-				end: `+=${CARD_PIN_DISTANCE}`,
+				end: `+=${totalDistance}`,
 				pin: true,
 				scrub: 1,
 				anticipatePin: 1,
@@ -69,7 +71,8 @@ export function initWhyUs(): void {
 		});
 
 		const cardCount = borderFills.length;
-		const cardFraction = (1 - RIGHT_FILL_FRACTION) / cardCount;
+		const borderFillTotalDuration = CARD_PIN_DISTANCE / totalDistance;
+		const cardFraction = (borderFillTotalDuration * (1 - RIGHT_FILL_FRACTION)) / cardCount;
 
 		borderFills.forEach((fill, i) => {
 			const cardStart = i * cardFraction;
