@@ -16,18 +16,18 @@ interface Props {
 const { name, year, tags, description, image } = Astro.props;
 ---
 
-<article class="grid items-end border-t border-grey-5 bg-grey-2 lg:grid-cols-2">
-	<figure class="px-8 pt-8 lg:border-r lg:border-grey-5 bg-blue-50" data-sweep-border>
+<article class="grid items-start border-y border-blue-50 bg-grey-2 lg:grid-cols-2">
+	<figure class="px-8 pt-8 lg:border-r lg:border-blue-300 bg-blue-500">
 		<Image
 			src={image}
 			alt={`${name} — project preview`}
-			class="aspect-338/242 w-full border border-grey-5 object-cover lg:aspect-640/440 lg:border-b-0"
+			class="aspect-338/242 w-full border border-blue-300 object-cover lg:aspect-640/440 lg:border-b-0"
 			widths={[640, 1280]}
 			sizes="(min-width: 1024px) 50vw, 100vw"
 			loading="lazy"
 		/>
 	</figure>
-	<div class="flex flex-col justify-center gap-4 p-8 md:border-grey-5">
+	<div class="flex flex-col justify-center gap-4 p-8 md:border-grey-5" data-project-content>
 		<div class="flex flex-col gap-4">
 			<div class="flex flex-wrap items-center justify-between gap-4">
 				<h3 class="font-display font-semibold text-h3 text-grey-12">{name}</h3>
