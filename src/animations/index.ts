@@ -6,6 +6,7 @@ import { initMarquee } from "@animations/marquee";
 import { initPills } from "@animations/pill";
 import { initSweep } from "@animations/sweep";
 import { initWhyUs } from "@animations/whyus";
+import { initRecentProjects } from "@animations/recentProjects";
 
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother, SplitText);
 ScrollTrigger.config({ ignoreMobileResize: true });
@@ -70,6 +71,7 @@ if (!prefersReducedMotion) {
 	initPills();
 	initSweep();
 	initWhyUs();
+	initRecentProjects();
 
 	if (header && navBg && heroSection) {
 		let onHero = true;
