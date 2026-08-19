@@ -7,23 +7,33 @@ interface Props {
 	description?: string;
 	className?: string;
 	titleClassName?: string;
-	align?: "start" | "center";
 }
 
-const { pill, title, description, className = "", titleClassName = "", align = "start" } = Astro.props;
-
-const alignClass =
-	align === "center" ? "items-center text-center md:items-start md:text-left" : "items-start text-left";
+const {
+	pill,
+	title,
+	description,
+	className = "",
+	titleClassName = "",
+} = Astro.props;
 ---
 
-<header class={`flex w-full flex-col gap-4 px-8 lg:px-0 ${alignClass} ${className}`}>
+<header class={`flex w-full flex-col gap-4 px-8 lg:px-0 ${className}`}>
 	<Pill label={pill} />
-	<div class="flex w-full flex-col gap-2 lg:flex-row lg:items-center lg:justify-between lg:gap-8">
+
+	<div class="flex w-full flex-col gap-2 lg:flex-row lg:items-start lg:justify-between lg:gap-8">
 		{title && (
-			<h2 class={`shrink-0 font-display font-semibold text-mobile-h2 text-grey-13 md:text-h2 ${titleClassName}`}>
+			<h2
+				class={`font-display font-semibold text-mobile-h2 text-grey-13 md:text-h2 ${titleClassName} max-w-xl`}
+			>
 				{title}
 			</h2>
 		)}
-		{description && <p class="lg:max-w-[440px] text-body text-grey-10">{description}</p>}
+
+		{description && (
+			<p class="max-w-[420px] text-body text-grey-10 ">
+				{description}
+			</p>
+		)}
 	</div>
 </header>

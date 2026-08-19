@@ -9,7 +9,7 @@ interface Props {
 const { title, description, borderClass = "", className = "" } = Astro.props;
 
 let finalBorderClass = borderClass;
-let borderFillClass = borderClass.replace(/border-blue-400/g, "border-blue-50");
+let borderFillClass = borderClass.replace(/border-blue-50/g, "border-blue-500");
 
 if (className.includes("col-start-1")) {
 	finalBorderClass += " border-l-transparent";
@@ -24,8 +24,8 @@ if (className.includes("col-start-4")) {
 <article
 	class={`relative flex h-full flex-col gap-2.5 p-8 ${className}`}
 >
-	<h3 class="font-display font-bold text-h4 text-grey-2">{title}</h3>
-	<p class="text-body text-grey-2">{description}</p>
+	<h3 class="font-display font-bold text-h4 text-grey-13">{title}</h3>
+	<p class="text-body text-grey-8">{description}</p>
 	<div
 		class={`absolute inset-0 pointer-events-none ${finalBorderClass}`}
 		data-border-overlay
