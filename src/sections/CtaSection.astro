@@ -6,14 +6,27 @@ import ArrowIcon from "@assets/icons/arrow-top-right.svg";
 ---
 
 <Section
-	id="contact"
-	className="relative left-1/2 flex min-h-[900px] w-screen -translate-x-1/2 flex-col items-center justify-center gap-8 bg-blue-500 px-8 lg:px-0 lg:gap-8"
+    id="contact"
+    className="relative z-50 h-screen -mt-[100vh] flex flex-col items-center justify-center bg-blue-500 px-8 lg:px-0"
+    data-cta
 >
-	<Pill label="The Origin" tone="blue" />
-	<h2 class="max-w-[900px] text-center font-display font-bold text-mobile-h1 text-grey-1 md:text-h1">
-		Everything starts with <br class="hidden lg:inline" />a single point.
-	</h2>
-	<Button label="Start a Project" iconPosition="right" className="w-full max-w-[274px]">
-		<ArrowIcon slot="icon" class="h-4 w-4" />
-	</Button>
+    <!-- We wrap the content so we can fade it out independently from the blue background -->
+    <div
+        data-cta-content
+        class="flex flex-col items-center gap-8"
+    >
+        <Pill label="The Origin" tone="blue" />
+
+        <h2 class="max-w-[900px] text-center font-display font-bold text-mobile-h1 text-grey-1 md:text-h1">
+            Everything starts with <br class="hidden lg:inline" />a single point.
+        </h2>
+
+        <Button
+            label="Start a Project"
+            iconPosition="right"
+            className="w-full max-w-[274px]"
+        >
+            <ArrowIcon slot="icon" class="h-4 w-4" />
+        </Button>
+    </div>
 </Section>
