@@ -3,25 +3,20 @@ import { SplitText } from "gsap/SplitText";
 
 const BLUE_50 = "#e9eeff";
 const BLUE_200 = "#9bb0ff";
-const SCROLL_DISTANCE = 3000;
+const SCROLL_DISTANCE = 5000;
 const PILL_FRACTION = 0.05;
+const FEATURES_REVEAL_START = 1;
+const FEATURES_REVEAL_DURATION = 0.25;
 
 export function initWhyUs(): void {
 	const pin = document.querySelector<HTMLElement>(".why-us-pin");
 	const revealEl = document.querySelector<HTMLElement>("[data-why-us-reveal]");
-	const cardsEl = document.querySelector<HTMLElement>("[data-why-us-cards]");
 	const pill = document.querySelector<HTMLElement>(".why-us-pin [data-pill]");
+	const features = document.querySelector<HTMLElement>("[data-overlapping]");
 
-	if (!pin || !revealEl || !cardsEl) return;
-
-	const borderFills = Array.from(
-		document.querySelectorAll<HTMLElement>("[data-border-fill]"),
-	);
+	if (!pin || !revealEl) return;
 
 	if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-		borderFills.forEach((overlay) => {
-			overlay.style.clipPath = "none";
-		});
 		return;
 	}
 
@@ -52,51 +47,13 @@ export function initWhyUs(): void {
 		tl.set(char, { color: BLUE_50 }, position);
 	});
 
-	const CARD_PIN_DISTANCE = 2000;
-	const RIGHT_FILL_FRACTION = 0.15;
-
-	if (borderFills.length) {
-		const revealDistance = window.innerHeight;
-		const totalDistance = CARD_PIN_DISTANCE + revealDistance;
-
-		const cardsTl = gsap.timeline({
-			scrollTrigger: {
-				trigger: cardsEl,
-				start: "center center",
-				end: `+=${totalDistance}`,
-				pin: true,
-				scrub: 1,
-				anticipatePin: 1,
-			},
-		});
-
-		const cardCount = borderFills.length;
-		const borderFillTotalDuration = CARD_PIN_DISTANCE / totalDistance;
-		const cardFraction = (borderFillTotalDuration * (1 - RIGHT_FILL_FRACTION)) / cardCount;
-
-		borderFills.forEach((fill, i) => {
-			const cardStart = i * cardFraction;
-			const half = cardFraction / 2;
-
-			cardsTl.to(
-				fill,
-				{
-					clipPath: "polygon(0 0, 100% 0, 100% 0, 0 100%, 0 100%)",
-					ease: "none",
-					duration: half,
-				},
-				cardStart,
-			);
-
-			cardsTl.to(
-				fill,
-				{
-					clipPath: "polygon(0 0, 100% 0, 100% 100%, 100% 100%, 0 100%)",
-					ease: "none",
-					duration: half,
-				},
-				cardStart + half,
-			);
-		});
-	}
+	tl.to(
+		features,
+		{
+			y: 0,
+			duration: FEATURES_REVEAL_DURATION,
+			ease: "none",
+		},
+		FEATURES_REVEAL_START,
+	);
 }
