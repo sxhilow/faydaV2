@@ -10,6 +10,7 @@ export function initCtaTransition(): void {
     const content = document.querySelector<HTMLElement>("[data-cta-content]");
     const badge = document.querySelector<HTMLElement>("[data-floating-badge]");
     const footer = document.querySelector<HTMLElement>("footer");
+    const ctaLine = document.querySelector<HTMLElement>("[data-cta-line]");
 
     if (!cta || !badge || !content || !footer) return;
 
@@ -45,16 +46,15 @@ export function initCtaTransition(): void {
         },
     });
 
-    // Curtain drop
+    // 1. Curtain drop
     ctaTimeline.to(cta, {
         clipPath: () => getOpenInset(),
         duration: CTA_REVEAL_DISTANCE,
         ease: "none",
     });
 
-    // Hold
+    // 2. Hold
     ctaTimeline.to({}, { duration: CTA_HOLD_DISTANCE });
-
 
     // reserve the last 150px of the pin as a "buffer zone" to absorb the scrub lag.
     const bufferDistance = 150;
@@ -62,7 +62,7 @@ export function initCtaTransition(): void {
 
     ctaTimeline.addLabel("collapse");
 
-    // Shrinking the blue background
+    // 3. Shrinking the blue background
     ctaTimeline.to(
         cta,
         {
@@ -73,7 +73,7 @@ export function initCtaTransition(): void {
         "collapse"
     );
 
-    //  content fade out  ONLY during the final 30% of the collapse phase
+    // 4. Content fade out ONLY during the final 30% of the collapse phase
     const contentFadeDuration = collapseDuration * 0.3;
     const contentFadeStart = collapseDuration - contentFadeDuration;
 
@@ -87,7 +87,7 @@ export function initCtaTransition(): void {
         `collapse+=${contentFadeStart}`
     );
 
-    // SVG badge fade in concurrently with the text fading out
+    // 5. SVG badge fades in concurrently
     ctaTimeline.to(
         badge,
         {
@@ -98,11 +98,23 @@ export function initCtaTransition(): void {
         `collapse+=${contentFadeStart}`
     );
 
-    // 6. Instantly hide the pinned CTA right after the collapse finishes
+    // 6. Draw the tether line rolling down from the ball
+    if (ctaLine) {
+        ctaTimeline.to(
+            ctaLine,
+            {
+                scaleY: 1,
+                duration: contentFadeDuration,
+                ease: "power2.out",
+            },
+            `collapse+=${contentFadeStart}`
+        );
+    }
+
+    // 7. Instantly hide the pinned CTA right after the collapse finishes
     ctaTimeline.set(cta, { opacity: 0 });
 
-    // empty buffer to the timeline so the pin holds for an extra 150px
-    // This allows the visual swap to fully complete before the element unpins.
+    // Empty buffer to the timeline so the pin holds for an extra 150px
     ctaTimeline.to({}, { duration: bufferDistance });
 
     // Fixed Badge Follows to Footer
