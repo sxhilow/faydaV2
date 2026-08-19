@@ -6,7 +6,7 @@ interface Props {
 	[key: string]: any;
 }
 
-const { id, className = "bg-grey-2 py-20 lg:py-32", style = "", ...rest } = Astro.props;
+const { id, className = "bg-grey-2", style = "", ...rest } = Astro.props;
 ---
 
 <section id={id} class={className} style={style} {...rest}>
