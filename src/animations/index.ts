@@ -6,6 +6,7 @@ import { initMarquee } from "@animations/marquee";
 import { initPills } from "@animations/pill";
 import { initSweep } from "@animations/sweep";
 import { initWhyUs } from "@animations/whyus";
+import { initFeatures } from "@animations/features";
 import { initRecentProjects } from "@animations/recentProjects";
 
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother, SplitText);
@@ -34,7 +35,6 @@ const OPEN_STATE: Record<string, gsap.TweenVars> = {
 const menuToggle = document.getElementById("menu-toggle") as HTMLInputElement | null;
 const mobileMenu = document.getElementById("mobile-menu");
 const header = document.querySelector<HTMLElement>("header");
-const navBg = header?.querySelector<HTMLElement>(".absolute.inset-0.z-10");
 const heroSection = document.getElementById("top");
 
 const syncMenu = (checked: boolean, duration: number) => {
@@ -49,7 +49,6 @@ const syncMenu = (checked: boolean, duration: number) => {
 menuToggle?.addEventListener("change", () => {
 	ScrollSmoother.get()?.paused(menuToggle.checked);
 	syncMenu(menuToggle.checked, prefersReducedMotion ? 0 : 0.3);
-	if (menuToggle.checked && header) gsap.set(header, { y: 0 });
 });
 
 syncMenu(menuToggle?.checked ?? false, 0);
@@ -71,60 +70,69 @@ if (!prefersReducedMotion) {
 	initPills();
 	initSweep();
 	initWhyUs();
+	initFeatures();
 	initRecentProjects();
 
-	if (header && navBg && heroSection) {
+	if (header && heroSection) {
+		const secondaryNav = header.querySelector<HTMLElement>("[data-nav-secondary]");
+		const desktopMq = window.matchMedia("(min-width: 1024px)");
 		let onHero = true;
-		let navHidden = false;
-		let isTransitioning = false;
+		let secondaryHidden = false;
+
+		const showSecondary = () => {
+			if (!secondaryNav) return;
+			secondaryHidden = false;
+			gsap.to(secondaryNav, {
+				y: 0,
+				autoAlpha: 1,
+				duration: 0.5,
+				ease: "power3.out",
+				overwrite: "auto",
+			});
+		};
+
+		const hideSecondary = () => {
+			if (!secondaryNav) return;
+			secondaryHidden = true;
+			gsap.to(secondaryNav, {
+				y: "-100%",
+				autoAlpha: 0,
+				duration: 0.4,
+				ease: "power2.inOut",
+				overwrite: "auto",
+			});
+		};
+
+		if (secondaryNav) gsap.set(secondaryNav, { y: "-100%", autoAlpha: 0 });
 
 		new IntersectionObserver(
 			(entries) => {
 				const wasOnHero = onHero;
 				onHero = entries[0].isIntersecting;
-				navBg.classList.toggle("bg-grey-2", !onHero);
 
-				// Smoothly hide the navbar when scrolling up into the hero section
-				if (onHero && !wasOnHero && !navHidden) {
-					isTransitioning = true;
-					gsap.to(header, {
-						y: "-100%",
-						opacity: 0,
-						duration: 0.4,
-						ease: "power2.inOut",
-						onComplete: () => {
-							isTransitioning = false;
-							navHidden = true;
-							gsap.set(header, { opacity: 1 });
-						},
-					});
+				if (desktopMq.matches && onHero !== wasOnHero) {
+					if (onHero) {
+						hideSecondary();
+					} else {
+						showSecondary();
+					}
 				}
 			},
 			{ threshold: 0 },
 		).observe(heroSection);
 
-		// While the hero is in view, the navbar scrolls with the page
-		// instead of staying pinned to the top of the viewport.
-		gsap.ticker.add(() => {
-			if (!onHero || menuToggle?.checked || isTransitioning) return;
-			gsap.set(header, { y: -smoother.scrollTop() });
-			navHidden = true;
-		});
-
+		// Desktop only: the secondary navbar hides on scroll down and
+		// slides back in on scroll up.
 		ScrollTrigger.create({
 			start: "top top",
 			end: 99999,
 			onUpdate: (self) => {
-				if (onHero || menuToggle?.checked) return;
+				if (onHero || !desktopMq.matches) return;
 
-				if (self.direction === 1 && !navHidden) {
-					gsap.to(header, { y: "-100%", duration: 0.5, ease: "power2.inOut" });
-					navHidden = true;
-				} else if (self.direction === -1 && navHidden) {
-					// Ensure it slides down from just above the viewport, not from a huge negative position
-					gsap.set(header, { y: "-100%" });
-					gsap.to(header, { y: 0, duration: 0.5, ease: "power2.inOut" });
-					navHidden = false;
+				if (self.direction === 1 && !secondaryHidden) {
+					hideSecondary();
+				} else if (self.direction === -1 && secondaryHidden) {
+					showSecondary();
 				}
 			},
 		});

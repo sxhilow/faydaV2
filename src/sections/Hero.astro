@@ -3,10 +3,91 @@ import { Image } from "astro:assets";
 import Button from "@components/Button.astro";
 import Pill from "@components/Pill.astro";
 import MeetIcon from "@assets/icons/google-meet.svg";
+import LogoDark from "@assets/logo-dark.svg";
+import LogoLight from "@assets/logo-light.svg";
+import LogoSahil from "@assets/logo-sahil.svg";
+import MenuIcon from "@assets/icons/menu.svg";
+import CloseIcon from "@assets/icons/close.svg";
 import { marquee } from "@constants/marquee.ts";
+import { primaryNav as links } from "@constants/nav.ts";
 ---
 
 <section id="top">
+	<div
+		data-nav-primary
+		data-sweep-border
+		class="flex w-full justify-between items-center px-8 md:px-16 xl:px-20 border-b border-blue-50"
+	>
+		<div class="w-full flex justify-between  py-8">
+			<a
+				href="#top"
+				aria-label="Fayda Studio home"
+				class="relative flex flex-1"
+			>
+				<span class="menu-logo relative block">
+					<LogoDark class="menu-logo-dark block h-8 w-auto" />
+					<LogoLight
+						class="menu-logo-light absolute left-0 top-0 block h-8 w-auto opacity-0"
+					/>
+					<LogoSahil
+						class="menu-logo-sahil absolute left-0 top-0 block h-8 w-auto opacity-0"
+					/>
+				</span>
+			</a>
+			<nav aria-label="Primary" class="hidden items-center gap-8 lg:flex">
+				{
+					links.map((link) => (
+						<a
+							href={link.href}
+							data-invert="nav-link"
+							data-invert-clip
+							data-invert-dark="text-grey-10"
+							data-invert-light="text-white"
+							class="text-medium-sm font-medium text-grey-10 transition-colors duration-200"
+						>
+							{link.label}
+						</a>
+					))
+				}
+			</nav>
+			<div class="hidden flex-1 justify-end lg:flex">
+				<Button
+					label="Book a 15-Min Call"
+					data-invert="cta"
+					data-invert-clip
+					data-invert-dark="text-grey-13"
+					data-invert-light="text-white"
+				>
+					<MeetIcon slot="icon" class="h-3 w-[14px]" />
+				</Button>
+			</div>
+			<label
+				for="menu-toggle"
+				class="flex cursor-pointer items-center gap-2 lg:hidden"
+				aria-label="Toggle menu"
+			>
+				<span class="relative block">
+					<span
+						class="menu-label-open block text-body-sm text-grey-10 transition-colors duration-200"
+						data-invert="menu-label"
+						data-invert-clip
+						data-invert-dark="text-grey-10"
+						data-invert-light="text-white">Menu</span
+					>
+					<span
+						class="menu-label-close absolute inset-0 block text-body-sm text-grey-1 opacity-0"
+						>Close</span
+					>
+				</span>
+				<span class="relative block h-4 w-4">
+					<MenuIcon class="menu-icon-open absolute inset-0 h-4 w-4" />
+					<CloseIcon
+						class="menu-icon-close absolute inset-0 h-4 w-4 opacity-0"
+					/>
+				</span>
+			</label>
+		</div>
+	</div>
 	<div
 		class="relative z-30 mx-auto flex w-full max-w-[958px] flex-col items-center gap-16 px-8 pt-16 lg:px-0 lg:pt-28"
 	>
@@ -54,7 +135,7 @@ import { marquee } from "@constants/marquee.ts";
 		</div>
 	</div>
 	<div
-		class="relative left-1/2 z-30 mt-16 w-screen -translate-x-1/2 overflow-hidden border border-grey-5"
+		class="relative left-1/2 z-30 mt-16 w-screen -translate-x-1/2 overflow-hidden border border-blue-50"
 	>
 		<div
 			data-marquee-track
@@ -64,7 +145,7 @@ import { marquee } from "@constants/marquee.ts";
 				[...marquee, ...marquee].map((item, index) => (
 					<figure
 						aria-hidden={index >= marquee.length}
-						class="w-[340px] shrink-0 border-r border-grey-5 p-4 md:w-[508px] lg:w-[630px]"
+						class="w-[340px] shrink-0 border-r border-blue-50 p-4 md:w-[508px] lg:w-[630px]"
 						data-sweep-border
 					>
 						<Image
