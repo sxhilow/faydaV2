@@ -7,28 +7,29 @@ import { projects } from "@constants/projects.ts";
 
 <Section
 	id="work"
-	className="relative z-40 bg-grey-2 py-16 lg:py-20 overflow-hidden w-full"
+	className="relative z-40 bg-grey-2 overflow-hidden w-full"
 	data-recent-projects
 >
-	<div class="mx-auto w-full max-w-7xl md:px-6 xl:px-0 flex flex-col gap-16">
-		<div data-rp-heading>
-			<SectionHeader
-				pill="Recent Projects"
-				title="What We've Been Building"
-				description="From client work to creative explorations, here's a look at what we've been building recently."
-			/>
-		</div>
-		<div
-			class="relative flex flex-col"
-			data-rp-cards
-		>
-			{
-				projects.map((project) => (
-					<div data-rp-card>
-						<ProjectCard {...project} />
-					</div>
-				))
-			}
+	<div
+		class="relative mx-auto w-full max-w-7xl border-x border-blue-50 py-20 lg:py-24"
+	>
+		<div data-rp-content class="flex flex-col gap-16">
+			<div data-rp-heading class="px-5 lg:px-8">
+				<SectionHeader
+					pill="Recent Projects"
+					title="What We've Been Building"
+					description="From client work to creative explorations, here's a look at what we've been building recently."
+				/>
+			</div>
+			<div class="relative flex flex-col" data-rp-cards>
+				{
+					projects.map((project) => (
+						<div data-rp-card>
+							<ProjectCard {...project} />
+						</div>
+					))
+				}
+			</div>
 		</div>
 	</div>
 </Section>
