@@ -3,6 +3,9 @@ import Section from "@components/Section.astro";
 import SectionHeader from "@components/SectionHeader.astro";
 import ProjectCard from "@components/ProjectCard.astro";
 import { projects } from "@constants/projects.ts";
+import Pill from "@components/Pill.astro";
+import Button from "@components/Button.astro";
+import ArrowIcon from "@assets/icons/arrow-top-right.svg";
 ---
 
 <Section
@@ -11,7 +14,7 @@ import { projects } from "@constants/projects.ts";
 	data-recent-projects
 >
 	<div
-		class="relative mx-auto w-full max-w-7xl border-x border-blue-50 py-20 lg:py-24"
+		class="relative mx-auto w-full max-w-7xl border-x border-blue-50 py-20"
 	>
 		<div data-rp-content class="flex flex-col gap-16">
 			<div data-rp-heading class="px-5 lg:px-8">

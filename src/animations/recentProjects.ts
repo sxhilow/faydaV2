@@ -105,4 +105,5 @@ export function initRecentProjects(): void {
 			);
 		}
 	});
+
 }
