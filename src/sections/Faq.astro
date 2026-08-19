@@ -9,11 +9,17 @@ import founderImage from "@assets/founder.png";
 import MeetIcon from "@assets/icons/google-meet.svg";
 ---
 
-<Section className="bg-grey-2 py-20">
+<Section className="bg-grey-2 relative" id="faq-section">
 	<div
-		class="max-w-7xl mx-auto border-x border-blue-50 flex flex-col items-center gap-16 py-20 lg:py-32"
+		class="relative max-w-7xl mx-auto border-x border-blue-50 flex flex-col items-center gap-16 py-20 lg:py-32 z-0"
 	>
-		<div class="w-full px-5 lg:px-8">
+		<!-- The Continuous Background Track Line -->
+		<div
+			class="absolute left-1/2 top-0 bottom-0 w-px bg-blue-50 -translate-x-1/2 pointer-events-none hidden lg:block z-0"
+		>
+		</div>
+
+		<div class="w-full px-5 lg:px-8 relative z-10">
 			<SectionHeader
 				pill="Frequently Asked Questions"
 				title="A few things you might want to know."
@@ -21,9 +27,11 @@ import MeetIcon from "@assets/icons/google-meet.svg";
 			/>
 		</div>
 
-		<div class="grid w-full lg:grid-cols-[minmax(0,1fr)_638px]">
+		<div
+			class="grid w-full lg:grid-cols-2 relative z-10 border-t border-b border-blue-50"
+		>
 			<aside
-				class="flex flex-col items-center justify-center gap-8 border-t border-grey-5 p-8 text-center lg:border-r lg:border-b lg:px-16 lg:py-16 xl:px-32"
+				class="flex flex-col items-center justify-start gap-8 p-8 text-center lg:px-16 xl:px-32"
 			>
 				<div class="flex flex-col items-center gap-4">
 					<Image
@@ -55,16 +63,13 @@ import MeetIcon from "@assets/icons/google-meet.svg";
 					<MeetIcon slot="icon" class="h-3 w-[14px]" />
 				</Button>
 			</aside>
+
 			<div
-				class="flex flex-col justify-center border-t border-grey-5 lg:border-x-0 lg:border-b"
+				class="flex flex-col justify-center border-t border-grey-5 lg:border-t-0"
 			>
 				{
 					faqs.map((faq) => (
-						<FaqItem
-							question={faq.question}
-							answer={faq.answer}
-							open={faq.open}
-						/>
+						<FaqItem question={faq.question} answer={faq.answer} />
 					))
 				}
 			</div>

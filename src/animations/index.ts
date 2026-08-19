@@ -10,6 +10,7 @@ import { initFeatures } from "@animations/features";
 import { initRecentProjects } from "@animations/recentProjects";
 import { initCtaTransition } from "./ctaTransition";
 import { initServices } from "./services";
+import { initFaq } from "./faq";
 
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother, SplitText);
 ScrollTrigger.config({ ignoreMobileResize: true });
@@ -76,6 +77,7 @@ if (!prefersReducedMotion) {
 	initRecentProjects();
 	initCtaTransition();
 	initServices();
+	initFaq();
 
 	if (header && heroSection) {
 		const secondaryNav = header.querySelector<HTMLElement>("[data-nav-secondary]");
