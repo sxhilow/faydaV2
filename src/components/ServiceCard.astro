@@ -20,12 +20,25 @@ interface Props {
 const { eyebrow, title, subtitle, items, muted = false } = Astro.props;
 ---
 
-<article class="grid border-y border-grey-5 md:grid-cols-2">
-	<header class="flex flex-col justify-center gap-4 p-8 pb-4 md:items-end md:border-r md:border-grey-5 md:text-right">
+<!-- 1. Added 'relative' for absolute positioning and '-mt-[1px]' to prevent horizontal border doubling -->
+<article
+	class="service-card group relative grid border-y border-blue-50 transition-colors duration-500 data-[active=true]:border-blue-500 md:grid-cols-2"
+>
+	<!-- 2. This centered absolute div replaces the ul border-l. It perfectly eclipses the background track line -->
+	<div
+		class="absolute left-1/2 top-0 bottom-0 w-[1px] bg-blue-50 -translate-x-1/2 transition-colors duration-500 group-data-[active=true]:bg-blue-500 hidden md:block z-0"
+	>
+	</div>
+
+	<header
+		class="flex flex-col justify-center gap-4 p-8 pb-4 relative z-10 md:items-end md:text-right"
+	>
 		<div class="flex flex-col gap-4">
 			<p class="text-caption text-grey-10">{eyebrow}</p>
 			<div class="flex flex-col gap-1">
-				<h3 class="font-display font-semibold text-mobile-h2 text-grey-13 lg:text-h2">
+				<h3
+					class="font-display font-semibold text-mobile-h2 text-grey-13 lg:text-h2"
+				>
 					{title}
 				</h3>
 				<p class="max-w-[440px] text-body text-grey-10">{subtitle}</p>
@@ -37,17 +50,30 @@ const { eyebrow, title, subtitle, items, muted = false } = Astro.props;
 			</Button>
 		</div>
 	</header>
-	<ul class="flex flex-col justify-center gap-2 px-8 pb-8 pt-4">
-		{items.map(({ icon: Icon, label }) => (
-			<li class="flex items-center gap-2">
-				<Icon class="h-4 w-4 shrink-0" />
-				<span class={muted ? "text-body text-grey-8" : "text-body text-grey-10"}>{label}</span>
-			</li>
-		))}
+
+	<!-- 3. Removed the border-l and transition classes from this ul -->
+	<ul class="flex flex-col justify-center gap-2 px-8 pb-8 pt-4 relative z-10">
+		{
+			items.map(({ icon: Icon, label }) => (
+				<li class="flex items-center gap-2">
+					<Icon class="h-4 w-4 shrink-0" />
+					<span
+						class={
+							muted
+								? "text-body text-grey-8"
+								: "text-body text-grey-10"
+						}
+					>
+						{label}
+					</span>
+				</li>
+			))
+		}
 	</ul>
-	<div class="px-8 pb-8 md:hidden">
+
+	<div class="px-8 pb-8 md:hidden relative z-10">
 		<Button label="Book a 15-Min Call" variant="dark" className="w-full">
-				<MeetIcon slot="icon" class="h-3 w-[14px]" />
-			</Button>
+			<MeetIcon slot="icon" class="h-3 w-[14px]" />
+		</Button>
 	</div>
 </article>

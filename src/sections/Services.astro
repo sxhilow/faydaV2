@@ -6,17 +6,26 @@ import { services } from "@constants/services.ts";
 ---
 
 <Section id="services" data-badge-target>
-	<div class="flex flex-col items-center gap-16">
-		<SectionHeader
-			pill="Our Services"
-			title="What are you looking to build?"
-			description="Whether you're starting from scratch or already have a website, there's a clear path forward."
-			titleClassName="lg:max-w-[530px]"
-		/>
-		<div class="flex w-full flex-col">
-			{services.map((service) => (
-				<ServiceCard {...service} />
-			))}
+	<div
+		class="relative max-w-7xl mx-auto border-x border-blue-50 flex flex-col items-center gap-16 py-20 lg:py-32 z-0"
+	>
+		<!-- The Continuous Background Track Line -->
+		<div
+			class="absolute left-1/2 top-0 bottom-0 w-px bg-blue-50 -translate-x-1/2 pointer-events-none -z-10 hidden md:block"
+		>
+		</div>
+
+		<div class="w-full px-5 lg:px-8 relative z-10">
+			<SectionHeader
+				pill="Our Services"
+				title="What are you looking to build?"
+				description="Whether you're starting from scratch or already have a website, there's a clear path forward."
+				titleClassName="lg:max-w-[530px]"
+			/>
+		</div>
+
+		<div class="flex w-full flex-col relative z-10">
+			{services.map((service) => <ServiceCard {...service} />)}
 		</div>
 	</div>
 </Section>
