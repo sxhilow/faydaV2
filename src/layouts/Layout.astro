@@ -39,9 +39,14 @@ const {
 		<div
 			data-floating-badge
 			aria-hidden="true"
-			class="pointer-events-none fixed left-1/2 top-1/2 z-[100] w-[76.8px] h-[76.8px] -translate-x-1/2 -translate-y-1/2 opacity-0"
+			class="pointer-events-none fixed left-1/2 top-1/2 z-[100] -translate-x-1/2 -translate-y-1/2 opacity-0"
 		>
-			<Badge />
+			<div
+				data-badge-inner
+				class="w-12 h-12 drop-shadow-[0_0_15px_rgba(37,83,255,0.8)]"
+			>
+				<Badge />
+			</div>
 		</div>
 		<div id="smooth-wrapper">
 			<div id="smooth-content">

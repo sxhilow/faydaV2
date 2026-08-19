@@ -6,15 +6,17 @@ gsap.registerPlugin(ScrollTrigger);
 export function initServices(): void {
     const badge = document.querySelector<HTMLElement>("[data-floating-badge]");
     const serviceCards = document.querySelectorAll<HTMLElement>(".service-card");
+    
+    // Target the SVG directly so we don't twist the Y-axis of the container
+    const badgeSvg = badge?.querySelector("svg");
 
-    if (!badge || serviceCards.length === 0) return;
+    if (!badge || !badgeSvg || serviceCards.length === 0) return;
 
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
         return;
     }
 
     serviceCards.forEach((card) => {
-        // 1. Toggle border illumination when the card is perfectly centered
         ScrollTrigger.create({
             trigger: card,
             start: "center center+=150",
@@ -25,7 +27,6 @@ export function initServices(): void {
             onLeaveBack: () => card.setAttribute("data-active", "false"),
         });
 
-        // 2. Add a magnetic "snap" effect to the badge
         const badgeSnapTl = gsap.timeline({
             scrollTrigger: {
                 trigger: card,
@@ -35,8 +36,9 @@ export function initServices(): void {
             }
         });
 
+        // rotate badgeSvg instead of badge
         badgeSnapTl
-            .to(badge, { scale: 1, rotation: "+=90", duration: 0.5, ease: "power2.out" })
-            .to(badge, { scale: 1, rotation: "+=90", duration: 0.5, ease: "power2.in" });
+            .to(badgeSvg, { scale: 1, rotation: "+=90", duration: 0.5, ease: "power2.out" })
+            .to(badgeSvg, { scale: 1, rotation: "+=90", duration: 0.5, ease: "power2.in" });
     });
 }
