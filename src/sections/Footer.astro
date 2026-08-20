@@ -5,79 +5,77 @@ import { footerNav as links, socials } from "@constants/nav.ts";
 import Logo from "@assets/logo-light.svg";
 ---
 
-<footer class="bg-blue-500 pt-20 pb-20 md:pt-[164px] md:pb-8">
-	<div class="mx-auto w-full max-w-7xl px-8 md:px-6 xl:px-0">
-		<div class="flex flex-col gap-16 md:gap-[120px]">
-			<div class="flex flex-col items-center gap-8 text-center">
-				<div
-					class="flex w-full flex-col items-center gap-4 lg:w-auto lg:justify-center"
-				>
-					<h2
-						class="font-display font-bold text-mobile-h1 text-grey-2 md:text-h1"
-					>
-						Let's expand your vision.
-					</h2>
-					<p class="text-body text-blue-50">
-						Tell us what you're working on.
-					</p>
-				</div>
-				<Button
-					label="Book a 15 min Call"
-					className="w-full max-w-[172px]"
-				>
-					<MeetIcon slot="icon" class="h-3 w-[14px]" />
-				</Button>
-			</div>
-			<nav
-				aria-label="Footer"
-				class="grid grid-cols-1 border-y border-blue-400 md:grid-cols-4"
-			>
-				{
-					links.map((link, i) => (
-						<a
-							href={link.href}
-							class={`flex items-center justify-center border-b border-blue-400 p-8 text-body md:border-b-0 md:border-r md:text-grey-2 ${
-								i === 0
-									? "text-grey-2"
-									: "text-blue-100 md:text-grey-2"
-							} ${i === links.length - 1 ? "md:border-r-0" : ""}`}
-						>
-							{link.label}
-						</a>
-					))
-				}
-			</nav>
-			<div
-				class="flex w-full flex-col items-center gap-8 md:grid md:grid-cols-[1fr_auto_1fr] md:items-center md:gap-4 md:gap-y-4"
-			>
-				<div class="flex w-full justify-center md:justify-start">
-					<ul class="flex items-center gap-2.5">
-						{
-							socials.map(({ href, label, icon: Icon }) => (
-								<li>
-									<a
-										href={href}
-										aria-label={label}
-										class="block"
-									>
-										<Icon />
-									</a>
-								</li>
-							))
-						}
-					</ul>
-				</div>
+<footer class="relative bg-grey-2" id="footer-section">
+    <!-- 1. The connecting track (stops at exactly 50vh, meeting the fixed badge) -->
+    <div class="absolute inset-0 max-w-7xl mx-auto pointer-events-none z-0">
+        <div class="h-full w-full border-x border-blue-50 relative">
+            <div
+                data-footer-line
+                class="absolute left-1/2 top-0 h-[50vh] w-[1px] bg-blue-50 -translate-x-1/2 hidden md:block z-10"
+            ></div>
+        </div>
+    </div>
 
-				<div class="flex w-full justify-center md:justify-center">
-					<p class="w-full text-center text-medium-sm text-blue-50">
-						Copyright © Fayda Studio
-					</p>
-				</div>
+    <!-- 2. The expanding background (starts fully hidden and clipped to a 32px circle) -->
+    <div
+        data-footer-bg
+        class="absolute inset-0 bg-blue-500 z-10"
+    ></div>
 
-				<div class="flex w-full justify-center md:justify-end">
-					<Logo class="w-full h-auto lg:w-[356px]" />
-				</div>
-			</div>
-		</div>
-	</div>
+    <!-- 3. The Footer Content (z-20 to sit above the background) -->
+    <div
+        data-footer-content
+        class="relative z-20 mx-auto w-full max-w-7xl px-8 md:px-6 xl:px-0 pt-20 pb-20 md:pt-[164px] md:pb-8 min-h-screen flex flex-col justify-end"
+    >
+        <div class="flex flex-col gap-16 md:gap-[120px] mt-auto w-full">
+            <div class="flex flex-col items-center gap-8 text-center">
+                <div class="flex w-full flex-col items-center gap-4 lg:w-auto lg:justify-center">
+                    <h2 class="font-display font-bold text-mobile-h1 text-grey-2 md:text-h1">
+                        Let's expand your vision.
+                    </h2>
+                    <p class="text-body text-blue-50">
+                        Tell us what you're working on.
+                    </p>
+                </div>
+                <Button label="Book a 15 min Call" className="w-full max-w-[172px]">
+                    <MeetIcon slot="icon" class="h-3 w-[14px]" />
+                </Button>
+            </div>
+            <nav aria-label="Footer" class="grid grid-cols-1 border-y border-blue-400 md:grid-cols-4">
+                {links.map((link, i) => (
+                    <a
+                        href={link.href}
+                        class={`flex items-center justify-center border-b border-blue-400 p-8 text-body md:border-b-0 md:border-r md:text-grey-2 ${
+                            i === 0 ? "text-grey-2" : "text-blue-100 md:text-grey-2"
+                        } ${i === links.length - 1 ? "md:border-r-0" : ""}`}
+                    >
+                        {link.label}
+                    </a>
+                ))}
+            </nav>
+            <div class="flex w-full flex-col items-center gap-8 md:grid md:grid-cols-[1fr_auto_1fr] md:items-center md:gap-4 md:gap-y-4">
+                <div class="flex w-full justify-center md:justify-start">
+                    <ul class="flex items-center gap-2.5">
+                        {socials.map(({ href, label, icon: Icon }) => (
+                            <li>
+                                <a href={href} aria-label={label} class="block">
+                                    <Icon />
+                                </a>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+
+                <div class="flex w-full justify-center md:justify-center">
+                    <p class="w-full text-center text-medium-sm text-blue-50">
+                        Copyright © Fayda Studio
+                    </p>
+                </div>
+
+                <div class="flex w-full justify-center md:justify-end">
+                    <Logo class="w-full h-auto lg:w-[356px]" />
+                </div>
+            </div>
+        </div>
+    </div>
 </footer>
