@@ -36,6 +36,8 @@ const {
 			class="pointer-events-none fixed inset-x-0 top-0 z-10 h-1 bg-blue-500"
 		>
 		</div>
+
+		<!-- Ball -->
 		<div
 			data-floating-badge
 			aria-hidden="true"
@@ -43,11 +45,16 @@ const {
 		>
 			<div
 				data-badge-inner
-				class="w-12 h-12 drop-shadow-[0_0_15px_rgba(37,83,255,0.8)]"
+				class="flex h-12 w-12 items-center justify-center drop-shadow-[0_0_15px_rgba(37,83,255,0.8)]"
 			>
-				<Badge />
+				<div
+					data-badge-visual
+					class="h-[20px] w-[20px] rounded-full bg-[#2553FF]"
+				>
+				</div>
 			</div>
 		</div>
+
 		<div id="smooth-wrapper">
 			<div id="smooth-content">
 				<main class="">

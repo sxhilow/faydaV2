@@ -1,3 +1,4 @@
+// Service
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -7,10 +8,11 @@ export function initServices(): void {
     const badge = document.querySelector<HTMLElement>("[data-floating-badge]");
     const serviceCards = document.querySelectorAll<HTMLElement>(".service-card");
     
-    // Target the SVG directly so we don't twist the Y-axis of the container
-    const badgeSvg = badge?.querySelector("svg");
+    // UPDATE: Target the new CSS div instead of the removed SVG
+    const badgeVisual = badge?.querySelector<HTMLElement>("[data-badge-visual]");
 
-    if (!badge || !badgeSvg || serviceCards.length === 0) return;
+    // If the visual element isn't found, it won't run (this was causing your bug!)
+    if (!badge || !badgeVisual || serviceCards.length === 0) return;
 
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
         return;
@@ -36,9 +38,9 @@ export function initServices(): void {
             }
         });
 
-        // rotate badgeSvg instead of badge
+        // Rotate the CSS ball so your ScrollTrigger timeline completes
         badgeSnapTl
-            .to(badgeSvg, { scale: 1, rotation: "+=90", duration: 0.5, ease: "power2.out" })
-            .to(badgeSvg, { scale: 1, rotation: "+=90", duration: 0.5, ease: "power2.in" });
+            .to(badgeVisual, { scale: 1, rotation: "+=90", duration: 0.5, ease: "power2.out" })
+            .to(badgeVisual, { scale: 1, rotation: "+=90", duration: 0.5, ease: "power2.in" });
     });
 }

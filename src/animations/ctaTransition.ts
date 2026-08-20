@@ -1,3 +1,4 @@
+// CTA Transition
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -24,18 +25,20 @@ export function initCtaTransition(): void {
         return;
     }
 
-    // this flag to completely disable recoil during the crossfade
-    let isRecoilDisabled = false;
-
     const getStartInset = () => `inset(0px 0px ${cta.offsetHeight}px 0px round 0px)`;
     const getOpenInset = () => `inset(0px 0px 0px 0px round 0px)`;
     const getBallInset = () => {
         const h = cta.offsetHeight;
         const w = cta.offsetWidth;
-        const radius = 10;
-        const insetY = h / 2 - radius;
+        const radius = 10; // 20px diameter circle
+
+        // Force vertical center to align exactly with 50vh (where fixed badge lives)
+        const centerY = window.innerHeight / 2;
+        const insetTop = centerY - radius;
+        const insetBottom = h - (centerY + radius);
         const insetX = w / 2 - radius;
-        return `inset(${insetY}px ${insetX}px ${insetY}px ${insetX}px round ${radius}px)`;
+
+        return `inset(${insetTop}px ${insetX}px ${insetBottom}px ${insetX}px round ${radius}px)`;
     };
 
     gsap.set(cta, { clipPath: getStartInset(), opacity: 1 });
@@ -51,18 +54,17 @@ export function initCtaTransition(): void {
             anticipatePin: 1,
             invalidateOnRefresh: true,
 
-            // when entering CTA section instantly kill of recoil
+            // UPDATE 2: Use an HTML attribute so the lock can be read globally
             onEnter: () => {
-                isRecoilDisabled = true;
+                badge.setAttribute("data-recoil-locked", "true");
                 if (badgeInner) { gsap.killTweensOf(badgeInner, "y"); gsap.set(badgeInner, { y: 0 }); }
             },
             onEnterBack: () => {
-                isRecoilDisabled = true;
+                badge.setAttribute("data-recoil-locked", "true");
                 if (badgeInner) { gsap.killTweensOf(badgeInner, "y"); gsap.set(badgeInner, { y: 0 }); }
             },
-            // Re-enable the recoil ONLY when the pinning is fully complete
-            onLeave: () => { isRecoilDisabled = false; },
-            onLeaveBack: () => { isRecoilDisabled = false; }
+            onLeave: () => { badge.removeAttribute("data-recoil-locked"); },
+            onLeaveBack: () => { badge.removeAttribute("data-recoil-locked"); }
         },
     });
 
@@ -73,15 +75,12 @@ export function initCtaTransition(): void {
     const collapseDuration = CTA_COLLAPSE_DISTANCE - bufferDistance;
 
     ctaTimeline.addLabel("collapse");
-
     ctaTimeline.to(cta, { clipPath: () => getBallInset(), duration: collapseDuration, ease: "power2.inOut" }, "collapse");
 
     const contentFadeDuration = collapseDuration * 0.3;
     const contentFadeStart = collapseDuration - contentFadeDuration;
 
     ctaTimeline.to(content, { opacity: 0, duration: contentFadeDuration, ease: "power2.out" }, `collapse+=${contentFadeStart}`);
-
-    // The SVG Fades in here — Because we locked it to y: 0 above, this will perfectly align!
     ctaTimeline.to(badge, { opacity: 1, duration: contentFadeDuration, ease: "none" }, `collapse+=${contentFadeStart}`);
 
     if (ctaLine) {
@@ -91,43 +90,16 @@ export function initCtaTransition(): void {
     ctaTimeline.set(cta, { opacity: 0 });
     ctaTimeline.to({}, { duration: bufferDistance });
 
-    gsap.to(badge, {
-        y: window.innerHeight * 0.4,
-        ease: "none",
-        scrollTrigger: {
-            trigger: footer,
-            start: "top bottom",
-            end: `+=${BADGE_FOLLOW_DISTANCE}`,
-            scrub: 1.5,
-        },
-    });
-
-    // Rotate the internal SVG, strictly preventing horizontal drifting bugs
-    const badgeSvg = badgeInner ? badgeInner.querySelector("svg") : null;
-    if (badgeSvg) {
-        gsap.to(badgeSvg, {
-            rotation: 180,
-            ease: "none",
-            scrollTrigger: {
-                trigger: footer,
-                start: "top bottom",
-                end: `+=${BADGE_FOLLOW_DISTANCE}`,
-                scrub: 1.5,
-            },
-        });
-    }
-
     // "Ease Out" Recoil effect
     if (badgeInner) {
         ScrollTrigger.create({
             start: 0,
             end: "max",
             onUpdate: (self) => {
-                // ABORT: If the CTA timeline is active, skip all recoil math.
-                if (isRecoilDisabled) return;
+                // UPDATE 3: Check for the global lock attribute
+                if (badge.hasAttribute("data-recoil-locked")) return;
 
                 let scrollVel = self.getVelocity();
-
                 if (Math.abs(scrollVel) < 10) return;
 
                 let yOffset = -(scrollVel * 0.05);
@@ -143,8 +115,7 @@ export function initCtaTransition(): void {
         });
 
         ScrollTrigger.addEventListener("scrollEnd", () => {
-            // prevent conflicting with the lock when scrolling stops
-            if (isRecoilDisabled) return;
+            if (badge.hasAttribute("data-recoil-locked")) return;
 
             gsap.to(badgeInner, {
                 y: 0,
