@@ -51,25 +51,12 @@ export function initFaq(): void {
             trigger: item,
             start: "top center",
             end: "bottom center",
-            onEnter: () => {
-                currentlyScrolledItem = item;
-                updateActiveState();
-            },
-            onEnterBack: () => {
-                currentlyScrolledItem = item;
-                updateActiveState();
-            },
-            onLeave: () => {
-                if (currentlyScrolledItem === item) {
-                    currentlyScrolledItem = null;
+
+            onToggle: (self) => {
+                if (self.isActive) {
+                    currentlyScrolledItem = item;
+                    updateActiveState();
                 }
-                updateActiveState();
-            },
-            onLeaveBack: () => {
-                if (currentlyScrolledItem === item) {
-                    currentlyScrolledItem = null;
-                }
-                updateActiveState();
             }
         });
     });
