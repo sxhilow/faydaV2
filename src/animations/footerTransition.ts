@@ -22,14 +22,6 @@ export function initFooterTransition(): void {
         return;
     }
 
-    const badgeVisual = badgeInner ? badgeInner.querySelector("[data-badge-visual]") : null;
-    if (badgeVisual) {
-        gsap.to(badgeVisual, {
-            rotation: 360,
-            ease: "none",
-            scrollTrigger: { trigger: document.body, start: "top top", end: "bottom bottom", scrub: 1 },
-        });
-    }
 
     // UPDATE 1: THE EARLY LOCK
     // This stops the bounce gracefully *before* the footer pins
@@ -84,11 +76,7 @@ export function initFooterTransition(): void {
         ease: "power2.inOut"
     }, "expand");
 
-    tl.fromTo(badge, 
-        { opacity: 1 },
-        { opacity: 0, duration: FOOTER_EXPAND_DISTANCE * 0.2, ease: "power2.inOut", immediateRender: false }, 
-        "expand"
-    );
+    tl.set(badge, { opacity: 0 }, "expand");
 
     const contentFadeStart = FOOTER_EXPAND_DISTANCE * 0.4;
     const contentFadeDuration = FOOTER_EXPAND_DISTANCE * 0.6;
