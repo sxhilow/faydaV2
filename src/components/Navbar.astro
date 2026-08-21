@@ -1,22 +1,46 @@
 ---
 import LogoDark from "@assets/logo-dark.svg";
 import MeetIcon from "@assets/icons/google-meet.svg";
+import MenuIcon from "@assets/icons/menu.svg";
+import CloseIcon from "@assets/icons/close.svg";
 import Button from "@components/Button.astro";
 import { primaryNav as links } from "@constants/nav.ts";
 ---
 
 <input type="checkbox" id="menu-toggle" class="peer sr-only" />
-<header class="fixed inset-x-0 top-0 z-40 hidden lg:block">
-	<div
-		data-nav-secondary
-		class="absolute inset-x-0 top-0 z-40"
-	>
-		<div class="mx-auto w-full max-w-5xl px-8 md:px-6 xl:px-0 ">
-			<nav class="flex items-center justify-between gap-8 rounded-b-4xl bg-grey-2 px-8 py-4 border border-t-0 border-grey-5 shadow-card">
-				<a href="#top" aria-label="Fayda Studio home" class="flex flex-1 items-center">
+<header class="fixed inset-x-0 top-0 z-[60]">
+	<div data-nav-secondary class="absolute inset-x-0 top-0 z-[60]">
+		<div class="mx-auto w-full max-w-5xl px-8 md:px-6 xl:px-0">
+			<nav
+				class="flex items-center justify-between gap-8 rounded-b-4xl bg-grey-2 px-8 py-4 border border-t-0 border-grey-5 shadow-card"
+			>
+				<a
+					href="#top"
+					aria-label="Fayda Studio home"
+					class="flex flex-1 items-center"
+				>
 					<LogoDark class="block h-8 w-auto" />
 				</a>
-				<div class="flex items-center gap-8">
+				<label
+					for="menu-toggle"
+					class="flex cursor-pointer items-center gap-2 lg:hidden"
+					aria-label="Toggle menu"
+				>
+					<span class="relative block">
+						<span class="menu-label-open block text-body-sm text-grey-10">Menu</span>
+						<span
+							class="menu-label-close absolute inset-0 block text-body-sm text-grey-10 opacity-0"
+							>Close</span
+						>
+					</span>
+					<span class="relative block h-4 w-4">
+						<MenuIcon class="menu-icon-open absolute inset-0 h-4 w-4" />
+						<CloseIcon
+							class="menu-icon-close absolute inset-0 h-4 w-4 opacity-0"
+						/>
+					</span>
+				</label>
+				<div class="hidden items-center gap-8 lg:flex">
 					{
 						links.map((link) => (
 							<a
@@ -28,7 +52,7 @@ import { primaryNav as links } from "@constants/nav.ts";
 						))
 					}
 				</div>
-				<div class="flex flex-1 justify-end">
+				<div class="hidden flex-1 justify-end lg:flex">
 					<Button label="Book a 15-Min Call">
 						<MeetIcon slot="icon" class="h-3 w-[14px]" />
 					</Button>
@@ -39,7 +63,7 @@ import { primaryNav as links } from "@constants/nav.ts";
 </header>
 <div
 	id="mobile-menu"
-	class="fixed inset-x-0 top-0 z-50 flex -translate-y-full flex-col bg-blue-500 px-8 pb-8 pt-28 transition-transform duration-500 ease-in-out peer-checked:translate-y-0 motion-reduce:transition-none lg:hidden"
+	class="fixed inset-x-0 top-0 bottom-0 z-50 flex -translate-y-full flex-col bg-blue-500 px-8 pb-8 pt-28 transition-transform duration-500 ease-in-out peer-checked:translate-y-0 motion-reduce:transition-none lg:hidden"
 >
 	<nav aria-label="Mobile" class="mt-8 flex flex-col justify-center">
 		{
