@@ -9,17 +9,17 @@ import founderImage from "@assets/founder.png";
 import MeetIcon from "@assets/icons/google-meet.svg";
 ---
 
-<Section className="bg-grey-2 relative" id="faq-section">
+<Section className="bg-grey-2 relative px-5 xl:px-0" id="faq-section">
 	<div
 		class="relative max-w-7xl mx-auto border-x border-blue-50 flex flex-col items-center gap-16 py-20 lg:py-32 z-0"
 	>
 		<!-- The Continuous Background Track Line -->
 		<div
-			class="absolute left-1/2 top-0 bottom-0 w-px bg-blue-50 -translate-x-1/2 pointer-events-none hidden lg:block z-0"
+			class="absolute left-1/2 top-0 bottom-0 w-px bg-blue-50 -translate-x-1/2 pointer-events-none hidden xl:block z-0"
 		>
 		</div>
 
-		<div class="w-full px-5 lg:px-8 relative z-10">
+		<div data-fade-in-content class="w-full lg:px-8 relative z-10">
 			<SectionHeader
 				pill="Frequently Asked Questions"
 				title="A few things you might want to know."
@@ -28,6 +28,7 @@ import MeetIcon from "@assets/icons/google-meet.svg";
 		</div>
 
 		<div
+			data-fade-in-content
 			class="grid w-full lg:grid-cols-2 relative z-10 border-t border-b border-blue-50"
 		>
 			<aside
@@ -39,7 +40,7 @@ import MeetIcon from "@assets/icons/google-meet.svg";
 						alt="Sahil, founder of Fayda"
 						width={100}
 						height={100}
-						class="size-25 rounded-full bg-blue-400 object-cover"
+						class="size-25 rounded-full bg-blue-500 object-cover"
 					/>
 					<h3
 						class="font-display font-semibold text-base text-grey-10 md:text-h4 text-center"
@@ -65,7 +66,7 @@ import MeetIcon from "@assets/icons/google-meet.svg";
 			</aside>
 
 			<div
-				class="flex flex-col justify-center border-t border-grey-5 lg:border-t-0"
+				class="flex flex-col justify-center border-t border-blue-50 lg:border-t-0"
 			>
 				{
 					faqs.map((faq) => (

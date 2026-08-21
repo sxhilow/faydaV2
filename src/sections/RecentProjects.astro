@@ -3,28 +3,25 @@ import Section from "@components/Section.astro";
 import SectionHeader from "@components/SectionHeader.astro";
 import ProjectCard from "@components/ProjectCard.astro";
 import { projects } from "@constants/projects.ts";
-import Pill from "@components/Pill.astro";
-import Button from "@components/Button.astro";
-import ArrowIcon from "@assets/icons/arrow-top-right.svg";
 ---
 
 <Section
 	id="work"
-	className="relative z-40 bg-grey-2 overflow-hidden w-full"
+	className="relative xl:z-40 bg-grey-2 overflow-hidden w-full px-5 xl:px-0"
 	data-recent-projects
 >
 	<div
 		class="relative mx-auto w-full max-w-7xl border-x border-blue-50 py-20"
 	>
 		<div data-rp-content class="flex flex-col gap-16">
-			<div data-rp-heading class="px-5 lg:px-8">
+			<div data-fade-in-content data-rp-heading class="lg:px-8">
 				<SectionHeader
 					pill="Recent Projects"
 					title="What We've Been Building"
 					description="From client work to creative explorations, here's a look at what we've been building recently."
 				/>
 			</div>
-			<div class="relative flex flex-col" data-rp-cards>
+			<div class="relative flex flex-col" data-fade-in-content data-rp-cards>
 				{
 					projects.map((project) => (
 						<div data-rp-card>

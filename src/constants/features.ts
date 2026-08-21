@@ -2,7 +2,7 @@ export const features = [
 	{
 		title: "Direct Communication",
 		description: "You'll always know what's happening, what's next, and who to speak to.",
-		borderClass: "border border-blue-50",
+		borderClass: "border-t md:border-r lg:border border-blue-50",
 		className: "lg:col-start-1 lg:row-start-1",
 	},
 	{
@@ -14,13 +14,13 @@ export const features = [
 	{
 		title: "Fast Turnaround",
 		description: "Know exactly who you're working with from the first conversation to launch.",
-		borderClass: "border-t border-b border-blue-50 md:border-r lg:border",
+		borderClass: "border-t md:border-b border-blue-50 md:border-r lg:border",
 		className: "lg:col-start-3 lg:row-start-3",
 	},
 	{
 		title: "Affordable Pricing",
 		description: "Professional websites for affordable rates",
-		borderClass: "border border-blue-50",
+		borderClass: "border-y lg:border border-blue-50",
 		className: "lg:col-start-4 lg:row-start-4",
 	},
 ];

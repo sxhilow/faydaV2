@@ -6,7 +6,9 @@ import ArrowIcon from "@assets/icons/arrow-top-right.svg";
 ---
 
 <Section id="contact" className="bg-grey-2 relative">
-    <div class="absolute inset-0 max-w-7xl mx-auto pointer-events-none z-0">
+    <div
+        class="absolute inset-0 max-w-7xl mx-auto pointer-events-none z-0 hidden xl:block"
+    >
         <div class="h-full w-full border-x border-blue-50 relative">
             <!-- The connecting track that the ball will drop down -->
             <div
@@ -19,18 +21,28 @@ import ArrowIcon from "@assets/icons/arrow-top-right.svg";
 
     <div
         data-cta
-        class="relative z-50 h-screen mt-[-100vh] flex flex-col items-center justify-center bg-blue-500 px-8 lg:px-0 w-full"
+        class="relative xl:z-50 flex flex-col items-center justify-center bg-blue-500 px-8 lg:px-0 py-20 xl:py-0 w-full xl:h-screen xl:mt-[-100vh]"
     >
         <!-- We wrap the text content so GSAP can fade it out independently from the blue background -->
-        <div data-cta-content class="flex flex-col items-center gap-8">
+        <div
+            data-fade-in-content
+            data-cta-content
+            class="flex flex-col items-center gap-8"
+        >
             <Pill label="The Origin" tone="blue" />
 
-            <h2
-                class="max-w-225 text-center font-display font-bold text-mobile-h1 text-grey-1 md:text-h1"
-            >
-                Everything starts with <br class="hidden lg:inline" />a single
-                point.
-            </h2>
+            <div class="flex flex-col gap-4 max-w-225 text-center ">
+                <h2
+                    class="font-display font-bold text-mobile-h1 text-grey-1 md:text-h1"
+                >
+                    Everything starts with <br class="hidden lg:inline" />a
+                    single point.
+                </h2>
+                <p class="text-body text-blue-50">
+                    Tell me what you're building, and we'll figure out the next
+                    step together.
+                </p>
+            </div>
 
             <Button
                 label="Start a Project"

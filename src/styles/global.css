@@ -103,3 +103,14 @@
 	}
 }
 
+@media (max-width: 1279px) {
+	#smooth-wrapper {
+		position: static;
+		overflow: visible;
+	}
+
+	#sweep-strip {
+		display: none;
+	}
+}
+
