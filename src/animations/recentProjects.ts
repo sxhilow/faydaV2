@@ -3,6 +3,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 const PIN_SCROLL_DISTANCE = 2000;
 const PEEK = 80;
+const SCALE_STEP = 0.05;
 const GREY_8 = "#dadadb";
 
 export function initRecentProjects(): void {
@@ -35,6 +36,7 @@ export function initRecentProjects(): void {
 			width: "100%",
 			zIndex: i + 1,
 			y: window.innerHeight,
+			transformOrigin: "center top",
 		});
 	});
 
@@ -106,4 +108,20 @@ export function initRecentProjects(): void {
 		}
 	});
 
+	// Depth: scale each card down as the cards landing on top of it arrive,
+	// so the stack recedes like a physical deck
+	cards.forEach((card, i) => {
+		const landingsAhead = cards.length - 1 - i;
+		for (let d = 1; d <= landingsAhead; d++) {
+			tl.to(
+				card,
+				{
+					scale: 1 - d * SCALE_STEP,
+					ease: "power2.out",
+					duration: cardFraction * 0.6,
+				},
+				(i + d) * cardFraction,
+			);
+		}
+	});
 }
