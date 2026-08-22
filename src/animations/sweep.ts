@@ -47,7 +47,7 @@ export function initSweep(): void {
 		return;
 	}
 
-	const heading = document.querySelector<HTMLElement>('[data-invert="heading"]');
+	const heading = document.querySelector<HTMLElement>("[data-sweep-anchor]");
 	const whyUs = document.getElementById("why-us");
 	const menuLogo = document.querySelector<HTMLElement>(".menu-logo");
 	const logoSahil = document.querySelector<HTMLElement>(".menu-logo-sahil");
@@ -470,6 +470,7 @@ export function initSweep(): void {
 			window.removeEventListener("pointerleave", onPointerLeave);
 			revealed = false;
 			following = false;
+			strip.hidden = true;
 			collapseStrip();
 		}
 	};
