@@ -6,6 +6,7 @@ export const primaryNav = [
 	{ href: "/work", label: "Our Work" },
 	{ href: "/#services", label: "Services" },
 	{ href: "/#why-us", label: "Why us" },
+	{ href: "/#faq-section", label: "FAQ" },
 	{ href: "/contact", label: "Contact" },
 ];
 
@@ -13,6 +14,7 @@ export const footerNav = [
 	{ href: "/#top", label: "Home" },
 	{ href: "/work", label: "Work" },
 	{ href: "/#services", label: "Services" },
+	{ href: "/#faq-section", label: "FAQ" },
 	{ href: "/contact", label: "Contact" },
 ];
 
