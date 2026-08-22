@@ -470,7 +470,9 @@ export function initSweep(): void {
 			window.removeEventListener("pointerleave", onPointerLeave);
 			revealed = false;
 			following = false;
-			strip.hidden = true;
+			if (!scrollFilling) {
+				strip.hidden = true;
+			}
 			collapseStrip();
 		}
 	};
@@ -501,9 +503,7 @@ export function initSweep(): void {
 	if (whyUs) {
 		new IntersectionObserver(
 			(entries) => {
-				// Fill only when the hero anchor is gone and the menu is closed,
-				// so the strip never expands while the hero or menu owns it.
-				if (entries[0].isIntersecting && !active && !menuOpen) startFill();
+				if (entries[0].isIntersecting) startFill();
 			},
 			{ threshold: 0 },
 		).observe(whyUs);
