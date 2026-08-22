@@ -6,6 +6,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const FOOTER_HOLD_DISTANCE = 250;
 const FOOTER_EXPAND_DISTANCE = 900;
+const FOOTER_SUBPAGE_EXPAND_DISTANCE = 450;
 
 export function initFooterTransition(): void {
     const footer = document.querySelector<HTMLElement>("#footer-section");
@@ -16,6 +17,13 @@ export function initFooterTransition(): void {
 
     if (!footer || !footerBg || !footerContent || !badge) return;
 
+    // Home runs the full ball-handoff choreography (hold + badge settle);
+    // every other page gets a shortened expand with no hold and no badge logic
+    const isHomeCtaFlow = Boolean(document.querySelector("[data-cta]"));
+    const expandDistance = isHomeCtaFlow
+        ? FOOTER_EXPAND_DISTANCE
+        : FOOTER_SUBPAGE_EXPAND_DISTANCE;
+
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
         gsap.set(footerBg, { clipPath: "none", opacity: 1 });
         gsap.set(footerContent, { opacity: 1, y: 0 });
@@ -25,26 +33,28 @@ export function initFooterTransition(): void {
 
     // UPDATE 1: THE EARLY LOCK
     // This stops the bounce gracefully *before* the footer pins
-    ScrollTrigger.create({
-        trigger: footer,
-        start: "top bottom", // Fires when footer enters the bottom of the viewport
-        onEnter: () => {
-            badge.setAttribute("data-recoil-locked", "true");
-            if (badgeInner) {
-                gsap.killTweensOf(badgeInner, "y");
-                // Gives the ball plenty of time to settle smoothly
-                gsap.to(badgeInner, { y: 0, duration: 0.6, ease: "power3.out", overwrite: "auto" }); 
+    if (isHomeCtaFlow && badgeInner) {
+        ScrollTrigger.create({
+            trigger: footer,
+            start: "top bottom", // Fires when footer enters the bottom of the viewport
+            onEnter: () => {
+                badge.setAttribute("data-recoil-locked", "true");
+                if (badgeInner) {
+                    gsap.killTweensOf(badgeInner, "y");
+                    // Gives the ball plenty of time to settle smoothly
+                    gsap.to(badgeInner, { y: 0, duration: 0.6, ease: "power3.out", overwrite: "auto" });
+                }
+            },
+            onLeaveBack: () => {
+                badge.removeAttribute("data-recoil-locked");
             }
-        },
-        onLeaveBack: () => {
-            badge.removeAttribute("data-recoil-locked");
-        }
-    });
+        });
+    }
 
     // UPDATE 2: DYNAMIC VIEWPORT FIX
     // Use native CSS percentages so mobile address bars don't break the alignment
     gsap.set(footerBg, {
-        clipPath: "circle(10px at 50% 50%)",
+        clipPath: "circle(8px at 50% 50%)",
         opacity: 0
     });
 
@@ -54,7 +64,7 @@ export function initFooterTransition(): void {
         scrollTrigger: {
             trigger: footer,
             start: "top top",
-            end: `+=${FOOTER_HOLD_DISTANCE + FOOTER_EXPAND_DISTANCE}`,
+            end: `+=${(isHomeCtaFlow ? FOOTER_HOLD_DISTANCE : 0) + expandDistance}`,
             pin: true,
             scrub: 1.5,
             anticipatePin: 1,
@@ -63,7 +73,9 @@ export function initFooterTransition(): void {
         },
     });
 
-    tl.to({}, { duration: FOOTER_HOLD_DISTANCE });
+    if (isHomeCtaFlow) {
+        tl.to({}, { duration: FOOTER_HOLD_DISTANCE });
+    }
 
     tl.addLabel("expand");
 
@@ -72,14 +84,16 @@ export function initFooterTransition(): void {
     // UPDATE 2 (Continued): Use percentages for the expanded state too
     tl.to(footerBg, {
         clipPath: "circle(150% at 50% 50%)",
-        duration: FOOTER_EXPAND_DISTANCE,
+        duration: expandDistance,
         ease: "power2.inOut"
     }, "expand");
 
-    tl.set(badge, { opacity: 0 }, "expand");
+    if (isHomeCtaFlow) {
+        tl.set(badge, { opacity: 0 }, "expand");
+    }
 
-    const contentFadeStart = FOOTER_EXPAND_DISTANCE * 0.4;
-    const contentFadeDuration = FOOTER_EXPAND_DISTANCE * 0.6;
+    const contentFadeStart = expandDistance * 0.4;
+    const contentFadeDuration = expandDistance * 0.6;
 
     tl.to(footerContent, {
         opacity: 1,

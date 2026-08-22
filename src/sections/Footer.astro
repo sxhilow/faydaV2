@@ -3,16 +3,22 @@ import Button from "@components/Button.astro";
 import MeetIcon from "@assets/icons/google-meet.svg";
 import { footerNav as links, socials } from "@constants/nav.ts";
 import Logo from "@assets/logo-studio-white.svg";
+
+const isHome = Astro.url.pathname === "/";
 ---
 
 <footer class="relative bg-grey-2" id="footer-section">
     <div class="absolute inset-0 max-w-7xl mx-auto pointer-events-none z-0">
         <div class="h-full w-full border-x border-blue-50 relative">
-            <div
-                data-footer-line
-                class="absolute left-1/2 top-0 h-[50vh] w-[1px] bg-blue-50 -translate-x-1/2 hidden md:block z-10"
-            >
-            </div>
+            {
+                isHome && (
+                    <div
+                        data-footer-line
+                        class="absolute left-1/2 top-0 h-[50vh] w-[1px] bg-blue-50 -translate-x-1/2 hidden md:block z-10"
+                    >
+                    </div>
+                )
+            }
         </div>
     </div>
 
