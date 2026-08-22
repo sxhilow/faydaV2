@@ -3,7 +3,7 @@ import socialLinkedIn from "@assets/socials/social-linkedin.svg";
 import socialTikTok from "@assets/socials/social-tiktok.svg";
 
 export const primaryNav = [
-	{ href: "/work", label: "Our Work" },
+	{ href: "/work", label: "Work" },
 	{ href: "/#services", label: "Services" },
 	{ href: "/#why-us", label: "Why us" },
 	{ href: "/#faq", label: "FAQ" },
