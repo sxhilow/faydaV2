@@ -15,6 +15,7 @@ import { initFooterTransition } from "./footerTransition";
 import { initFadeIn } from "@animations/fadeIn";
 import { initFaqMobile } from "@animations/faqMobile";
 import { initFooterNavHover } from "@animations/footerNavHover";
+import { initAnchors } from "@animations/anchors";
 
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother, SplitText);
 ScrollTrigger.config({ ignoreMobileResize: true });
@@ -60,6 +61,8 @@ menuToggle?.addEventListener("change", () => {
 });
 
 syncMenu(menuToggle?.checked ?? false, 0);
+
+initAnchors();
 
 if (!prefersReducedMotion) {
 	// Always run on all viewports
