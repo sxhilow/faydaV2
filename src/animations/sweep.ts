@@ -501,7 +501,9 @@ export function initSweep(): void {
 	if (whyUs) {
 		new IntersectionObserver(
 			(entries) => {
-				if (entries[0].isIntersecting) startFill();
+				// Fill only when the hero anchor is gone and the menu is closed,
+				// so the strip never expands while the hero or menu owns it.
+				if (entries[0].isIntersecting && !active && !menuOpen) startFill();
 			},
 			{ threshold: 0 },
 		).observe(whyUs);
