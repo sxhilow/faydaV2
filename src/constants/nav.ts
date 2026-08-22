@@ -3,17 +3,17 @@ import socialLinkedIn from "@assets/socials/social-linkedin.svg";
 import socialTikTok from "@assets/socials/social-tiktok.svg";
 
 export const primaryNav = [
-	{ href: "#work", label: "Our Work" },
+	{ href: "/work", label: "Our Work" },
 	{ href: "#services", label: "Services" },
 	{ href: "#why-us", label: "Why us" },
-	{ href: "#contact", label: "Contact" },
+	{ href: "/contact", label: "Contact" },
 ];
 
 export const footerNav = [
 	{ href: "#top", label: "Home" },
-	{ href: "#work", label: "Work" },
+	{ href: "/work", label: "Work" },
 	{ href: "#services", label: "Services" },
-	{ href: "#contact", label: "Contact" },
+	{ href: "/contact", label: "Contact" },
 ];
 
 export const socials = [
