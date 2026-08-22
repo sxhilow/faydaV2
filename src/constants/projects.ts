@@ -27,4 +27,25 @@ export const projects = [
 		image: cendre,
 		description: projectDescription,
 	},
+	{
+		name: "Atlas",
+		year: "2026 - Design from Scratch",
+		tags: ["Branding", "Design", "Development"],
+		image: vanguard,
+		description: projectDescription,
+	},
+	{
+		name: "Nimbus",
+		year: "2026 - Design from Scratch",
+		tags: ["Branding", "Design", "Development"],
+		image: meridian,
+		description: projectDescription,
+	},
+	{
+		name: "Solace",
+		year: "2026 - Design from Scratch",
+		tags: ["Branding", "Design", "Development"],
+		image: cendre,
+		description: projectDescription,
+	},
 ];

@@ -1,0 +1,42 @@
+---
+import Pill from "@components/Pill.astro";
+import Navbar from "@components/Navbar.astro";
+---
+
+<section id="top">
+	<Navbar variant="primary" invertible/>
+	<div class="relative mx-auto w-full max-w-7xl border-x border-b border-blue-50 px-5 xl:px-0">
+		<div class="flex flex-col items-center gap-4 py-20 text-center lg:py-32">
+			<span
+				data-invert="pill"
+				data-invert-clip
+				data-invert-dark="text-blue-500 text-grey-10"
+				data-invert-light="text-white"
+				data-fade-in-content
+			>
+				<Pill label="Our Work" />
+			</span>
+			<h1
+				data-sweep-anchor
+				data-invert="heading"
+				data-invert-clip
+				data-invert-dark="text-grey-13"
+				data-invert-light="text-white"
+				data-fade-in-content
+				class="font-display font-bold text-mobile-h1 text-grey-13 md:text-h1"
+			>
+				Recent Work
+			</h1>
+			<p
+				data-invert="hero-text"
+				data-invert-clip
+				data-invert-dark="text-grey-10"
+				data-invert-light="text-white"
+				class="max-w-[630px] text-body leading-[1.6] text-grey-10"
+			>
+				A collection of websites, design explorations, and digital work created
+				to help businesses show up better online.
+			</p>
+		</div>
+	</div>
+</section>

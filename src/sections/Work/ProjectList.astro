@@ -1,0 +1,71 @@
+---
+import Section from "@components/Section.astro";
+import Button from "@components/Button.astro";
+import ProjectCard from "@components/ProjectCard.astro";
+import ArrowIcon from "@assets/icons/arrow-top-right.svg";
+import { projects } from "@constants/projects.ts";
+
+const INITIAL_VISIBLE = 3;
+const LOAD_BATCH = 3;
+---
+
+<Section className="relative bg-grey-2 w-full px-5 xl:px-0">
+	<div
+		class="relative mx-auto w-full max-w-7xl border-x border-blue-50 py-20 xl:py-32"
+	>
+		<div class="flex flex-col" data-fade-in-content data-project-list>
+			{
+				projects.map((project, i) => (
+					<div data-project-card {...(i >= INITIAL_VISIBLE ? { hidden: true } : {})}>
+						<ProjectCard {...project} reverse={i % 2 === 1} />
+					</div>
+				))
+			}
+		</div>
+		<div class="mt-16 flex justify-center" data-load-more-wrap>
+			<Button label="Load More" data-load-more data-batch={LOAD_BATCH}>
+				<ArrowIcon slot="icon" class="h-4 w-4" />
+			</Button>
+		</div>
+	</div>
+</Section>
+
+<script>
+	import { gsap } from "gsap";
+
+	const list = document.querySelector<HTMLElement>("[data-project-list]");
+	const wrap = document.querySelector<HTMLElement>("[data-load-more-wrap]");
+	const button = document.querySelector<HTMLAnchorElement>("[data-load-more]");
+
+	if (list && wrap && button) {
+		const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+		button.addEventListener("click", (e) => {
+			e.preventDefault();
+
+			const hiddenCards = Array.from(
+				list.querySelectorAll<HTMLElement>("[data-project-card][hidden]"),
+			);
+			if (hiddenCards.length === 0) return;
+
+			const batch = Number(button.dataset.batch) || 3;
+			const revealed = hiddenCards.slice(0, batch);
+
+			revealed.forEach((card) => card.removeAttribute("hidden"));
+
+			if (!reduceMotion) {
+				gsap.from(revealed, {
+					opacity: 0,
+					y: 40,
+					duration: 0.6,
+					ease: "power3.out",
+					clearProps: "all",
+				});
+			}
+
+			if (hiddenCards.length <= batch) {
+				wrap.setAttribute("hidden", "");
+			}
+		});
+	}
+</script>
