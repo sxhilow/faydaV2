@@ -3,6 +3,8 @@ import Section from "@components/Section.astro";
 import SectionHeader from "@components/SectionHeader.astro";
 import ProjectCard from "@components/ProjectCard.astro";
 import { projects } from "@constants/projects.ts";
+
+const recentProjects = projects.slice(0, 3);
 ---
 
 <Section
@@ -23,7 +25,7 @@ import { projects } from "@constants/projects.ts";
 			</div>
 			<div class="relative flex flex-col" data-fade-in-content data-rp-cards>
 				{
-					projects.map((project) => (
+					recentProjects.map((project) => (
 						<div data-rp-card>
 							<ProjectCard {...project} />
 						</div>

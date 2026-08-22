@@ -7,15 +7,16 @@ import { features } from "@constants/features.ts";
 
 <Section
 	id="features"
-	className="relative xl:z-40 bg-grey-2 xl:mt-[-100vh]"
+	className="relative z-40 bg-grey-2 xl:mt-[-100vh]"
 	style="--cards-gap: clamp(3rem, 10vh, 6rem)"
 	data-overlapping
 >
 	<div
+		data-fade-in-content
 		data-features-cards
-		class="relative max-w-7xl mx-5 flex flex-col gap-16 border-x border-blue-50 md:mx-6 xl:mx-auto pt-[--cards-gap] pb-[--cards-gap]"
+		class="relative max-w-7xl mx-5 flex flex-col gap-16 border-x border-blue-50 md:mx-6 xl:mx-auto pt-[var(--cards-gap)] pb-[var(--cards-gap)]"
 	>
-		<div class="flex w-full justify-end px-5 lg:px-8" data-fade-in-content>
+		<div class="flex w-full justify-end px-5 lg:px-8">
 			<SectionHeader
 				pill="Why Fayda"
 				title="Everything you need"
