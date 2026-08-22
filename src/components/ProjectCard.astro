@@ -11,23 +11,31 @@ interface Props {
 	tags: string[];
 	description: string;
 	image: ImageMetadata;
+	reverse?: boolean;
 }
 
-const { name, year, tags, description, image } = Astro.props;
+const { name, year, tags, description, image, reverse = false } = Astro.props;
 ---
 
-<article class="grid items-start border-y border-blue-50 bg-grey-2 lg:grid-cols-2">
-	<figure class="px-8 pt-8 lg:border-r lg:border-blue-50 bg-blue-500">
+<article class="grid border-y border-blue-50 bg-grey-2 lg:grid-cols-2">
+	<figure
+		class:list={[
+			"px-8 pt-8 bg-blue-50",
+			reverse
+				? "lg:order-2 lg:border-l lg:border-blue-50"
+				: "lg:border-r lg:border-blue-50",
+		]}
+	>
 		<Image
 			src={image}
 			alt={`${name} — project preview`}
-			class="aspect-338/242 w-full border border-blue-50 object-cover lg:aspect-640/440 lg:border-b-0"
+			class="aspect-338/242 w-full border border-grey-5 object-cover lg:aspect-auto lg:h-full lg:border-b-0"
 			widths={[640, 1280]}
 			sizes="(min-width: 1024px) 50vw, 100vw"
 			loading="lazy"
 		/>
 	</figure>
-	<div class="flex flex-col justify-center gap-4 p-8 md:border-grey-5" data-project-content>
+	<div class="flex flex-col justify-center gap-4 p-8 xl:p-16 md:border-grey-5" data-project-content>
 		<div class="flex flex-col gap-4">
 			<div class="flex flex-wrap items-center justify-between gap-4">
 				<h3 class="font-display font-semibold text-h3 text-grey-12">{name}</h3>
