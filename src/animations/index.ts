@@ -20,7 +20,7 @@ gsap.registerPlugin(ScrollTrigger, ScrollSmoother, SplitText);
 ScrollTrigger.config({ ignoreMobileResize: true });
 
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-const isDesktop = window.matchMedia("(min-width: 1280px)").matches;
+const isDesktop = window.matchMedia("(min-width: 1281px)").matches;
 
 const CLOSED_STATE: Record<string, gsap.TweenVars> = {
 	".menu-logo-dark": { opacity: 1 },
