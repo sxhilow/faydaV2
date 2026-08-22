@@ -23,6 +23,9 @@
       ],
       "@animations/*": [
         "src/animations/*"
+      ],
+      "@scripts/*": [
+        "src/scripts/*"
       ]
     }
   },
