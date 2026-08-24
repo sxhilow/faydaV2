@@ -2,31 +2,25 @@
 import "@styles/global.css";
 import Navbar from "@components/navigation/Navbar.astro";
 import Footer from "@components/navigation/Footer.astro";
-import Badge from "@assets/icons/badge.svg";
+import Seo from "@components/seo/Seo.astro";
 
 const {
-	title = "Fayda Studio — Websites built from the ground up",
-	description = "Custom-designed and developed websites for businesses that need more than another generic template.",
-} = Astro.props;
+	title,
+	description,
+	noindex,
+}: { title?: string; description?: string; noindex?: boolean } = Astro.props;
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
-		<meta name="description" content={description} />
 		<meta name="theme-color" content="#2553FF" />
-		<meta property="og:type" content="website" />
-		<meta property="og:title" content={title} />
-		<meta property="og:description" content={description} />
-		<meta name="twitter:card" content="summary_large_image" />
-		<meta name="twitter:title" content={title} />
-		<meta name="twitter:description" content={description} />
-		<title>{title}</title>
+		<Seo {title} {description} {noindex} />
 	</head>
 	<body class="bg-grey-2 overflow-x-clip has-checked:overflow-hidden">
 		<Navbar />

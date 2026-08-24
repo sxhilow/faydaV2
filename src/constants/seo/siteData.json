@@ -1,0 +1,61 @@
+{
+  "title": "Fayda Studio — Websites built from the ground up",
+  "description": "Fayda Studio is a web design and development studio building fast, conversion-focused websites and web apps for businesses worldwide. Custom-coded in Astro.",
+  "keywords": "web development agency, website design, website redesign, Astro development, conversion-focused websites, UI/UX design, e-commerce development, web app development",
+  "url": "https://fayda.studio",
+  "image": {
+    "src": "/og.jpg",
+    "alt": "Fayda Studio — Websites built from the ground up",
+    "type": "image/jpeg",
+    "width": 1200,
+    "height": 630
+  },
+  "logo": {
+    "src": "/favicon.svg",
+    "alt": "Fayda Studio"
+  },
+  "company": {
+    "name": "Fayda Studio",
+    "legalName": "Fayda Studio (Pty) Ltd",
+    "founder": {
+      "name": "Sahil Jada",
+      "url": "https://www.linkedin.com/in/sahiljada/",
+      "sameAs": [
+        "https://www.linkedin.com/in/sahiljada/"
+      ]
+    },
+    "foundingDate": "2025-01-01",
+    "email": "hello@fayda.studio",
+    "phone": "+27812765709",
+    "areaServed": [
+      "Worldwide"
+    ],
+    "knowsAbout": [
+      "Astro",
+      "Next.js",
+      "React",
+      "TypeScript",
+      "Tailwind CSS",
+      "Node.js",
+      "UI/UX Design",
+      "Web Performance",
+      "SEO"
+    ]
+  },
+  "socialProfiles": [
+    "https://www.linkedin.com/company/fayda-studio/",
+    "https://www.linkedin.com/in/sahiljada/"
+  ],
+  "services": [
+    {
+      "name": "New Website",
+      "slug": "new-website",
+      "description": "Custom-designed and developed websites built from scratch in Figma and Astro, tailored around your business, audience, and goals."
+    },
+    {
+      "name": "Website Refresh",
+      "slug": "website-refresh",
+      "description": "Design and UX audit, improved navigation, mobile optimisation, clearer page structure, and conversion improvements for your existing website."
+    }
+  ]
+}

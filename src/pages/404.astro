@@ -1,0 +1,60 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Pill from "@components/ui/Pill.astro";
+import Navbar from "@components/navigation/Navbar.astro";
+import Button from "@components/ui/Button.astro";
+---
+
+<Layout
+	title="404 — Page Not Found | Fayda Studio"
+	description="The page you're looking for doesn't exist. Head back home or explore our recent work instead."
+	noindex
+>
+	<section id="top">
+		<Navbar variant="primary" invertible />
+		<div
+			class="relative mx-auto w-full max-w-7xl border-x border-b border-blue-50 px-5 xl:px-0"
+		>
+			<div
+				class="flex flex-col items-center gap-4 py-20 text-center lg:py-32"
+			>
+				<span
+					data-invert="pill"
+					data-invert-clip
+					data-invert-dark="text-blue-500 text-grey-10"
+					data-invert-light="text-white"
+					data-fade-in-content
+				>
+					<Pill label="404" />
+				</span>
+				<h1
+					data-sweep-anchor
+					data-invert="heading"
+					data-invert-clip
+					data-invert-dark="text-grey-13"
+					data-invert-light="text-white"
+					data-fade-in-content
+					class="font-display font-bold text-mobile-h1 text-grey-13 md:text-h1"
+				>
+					This page wandered off.
+				</h1>
+				<p
+					data-invert="hero-text"
+					data-invert-clip
+					data-invert-dark="text-grey-10"
+					data-invert-light="text-white"
+					class="max-w-[630px] text-body leading-[1.6] text-grey-10"
+				>
+					The page you're looking for doesn't exist or may have been
+					moved. Let's get you back on track.
+				</p>
+				<div
+					class="mt-4 flex w-full flex-col items-center gap-4 md:w-auto md:flex-row"
+				>
+					<Button label="Back to Home" variant="dark" href="/" />
+					<Button label="View Projects" href="/work" />
+				</div>
+			</div>
+		</div>
+	</section>
+</Layout>

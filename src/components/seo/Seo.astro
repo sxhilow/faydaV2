@@ -1,0 +1,115 @@
+---
+import siteData from "@constants/seo/siteData.json";
+import jsonLDGenerator, {
+  generateWebSiteSchema,
+  generateServiceSchema,
+} from "@constants/seo/jsonLD";
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: {
+    src: string;
+    alt: string;
+    type?: string;
+    width?: number;
+    height?: number;
+  };
+  robots?: string;
+  service?: { name: string; description: string; priceRange?: string } | null;
+  type?: string;
+  noindex?: boolean;
+}
+
+const {
+  title = siteData.title,
+  description = siteData.description,
+  image = siteData.image,
+  service = null,
+  type = "Organization",
+  noindex = false,
+} = Astro.props;
+
+const site = Astro.site ?? new URL(siteData.url);
+const canonical = new URL(Astro.url.pathname, site);
+const ogImage = new URL(image.src, site);
+const imageType = image.type ?? "image/jpeg";
+
+const robots =
+  noindex
+    ? "noindex, follow"
+    : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1";
+
+const organizationSchema = jsonLDGenerator(siteData, {
+  title,
+  description,
+  url: canonical.toString(),
+  image: { ...image },
+  type,
+});
+
+const websiteSchema = generateWebSiteSchema({
+  url: siteData.url,
+  name: siteData.title,
+});
+
+const twitterUrl = siteData.socialProfiles?.find(
+  (u) => u.includes("twitter.com") || u.includes("x.com"),
+);
+const twitterHandle = twitterUrl
+  ? `@${new URL(twitterUrl).pathname.split("/").filter(Boolean).pop()}`
+  : null;
+
+const combinedSchema = [organizationSchema, websiteSchema];
+
+if (service) {
+  combinedSchema.push(
+    generateServiceSchema({
+      serviceName: service.name,
+      description: service.description,
+      url: canonical.toString(),
+      priceRange: service.priceRange || "$$$",
+      provider: {
+        "@type": "Organization",
+        name: siteData.company.name,
+      },
+    }),
+  );
+}
+
+const jsonLD = JSON.stringify(combinedSchema);
+---
+
+<!-- Primary Meta Tags -->
+<title>{title}</title>
+<meta name="description" content={description} />
+<meta name="keywords" content={siteData.keywords} />
+<meta name="author" content={siteData.company.name} />
+<meta name="robots" content={robots} />
+<link rel="canonical" href={canonical.toString()} />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content={siteData.company.name} />
+<meta property="og:locale" content="en_US" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical.toString()} />
+<meta property="og:image" content={ogImage.toString()} />
+<meta property="og:image:secure_url" content={ogImage.toString()} />
+<meta property="og:image:type" content={imageType} />
+<meta property="og:image:width" content={image.width ?? 1200} />
+<meta property="og:image:height" content={image.height ?? 630} />
+<meta property="og:image:alt" content={image.alt} />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+{twitterHandle && <meta name="twitter:site" content={twitterHandle} />}
+{twitterHandle && <meta name="twitter:creator" content={twitterHandle} />}
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage.toString()} />
+<meta name="twitter:image:alt" content={image.alt} />
+
+<!-- Structured Data -->
+<script is:inline type="application/ld+json" set:html={jsonLD} />
