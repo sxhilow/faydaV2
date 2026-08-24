@@ -3,6 +3,7 @@ import { Image } from "astro:assets";
 import type { ImageMetadata } from "astro";
 import Pill from "@components/ui/Pill.astro";
 import Button from "@components/ui/Button.astro";
+import Skeleton from "@components/ui/Skeleton.astro";
 import ArrowIcon from "@assets/icons/arrow-top-right.svg";
 
 interface Props {
@@ -35,14 +36,16 @@ const {
 				: "lg:border-r lg:border-blue-50",
 		]}
 	>
-		<Image
-			src={image}
-			alt={`${name} — project preview`}
-			class="aspect-338/242 w-full border border-grey-5 object-cover lg:aspect-auto lg:h-full lg:border-b-0"
-			widths={[640, 1280]}
-			sizes="(min-width: 1024px) 50vw, 100vw"
-			loading="lazy"
-		/>
+		<Skeleton>
+			<Image
+				src={image}
+				alt={`${name} — project preview`}
+				class="aspect-338/242 w-full border border-grey-5 object-cover lg:aspect-auto lg:h-full lg:border-b-0"
+				widths={[640, 1280]}
+				sizes="(min-width: 1024px) 50vw, 100vw"
+				loading="lazy"
+			/>
+		</Skeleton>
 	</figure>
 	<div
 		class="flex flex-col justify-center gap-4 p-8 xl:p-16 md:border-grey-5"

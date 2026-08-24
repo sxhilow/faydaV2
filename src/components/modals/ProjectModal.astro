@@ -3,6 +3,7 @@ import { Image } from "astro:assets";
 import type { ImageMetadata } from "astro";
 import Pill from "@components/ui/Pill.astro";
 import Button from "@components/ui/Button.astro";
+import Skeleton from "@components/ui/Skeleton.astro";
 import ProjectCard from "@components/cards/ProjectCard.astro";
 import ArrowIcon from "@assets/icons/arrow-top-right.svg";
 
@@ -65,11 +66,13 @@ const {
 			<div class="flex flex-col gap-16 py-8 md:py-16">
 				<div class="border-y border-blue-50 px-5 xl:px-16">
 					<figure class="border-x border-blue-50">
-						<Image
-							src={hero}
-							alt={`${title} — landing page preview`}
-							class="aspect-4/3 w-full object-cover"
-						/>
+						<Skeleton>
+							<Image
+								src={hero}
+								alt={`${title} — landing page preview`}
+								class="aspect-4/3 w-full object-cover"
+							/>
+						</Skeleton>
 					</figure>
 				</div>
 
@@ -117,7 +120,8 @@ const {
 									Complete Design
 								</span>
 								<div class="flex flex-col gap-2">
-									{shots.map((shot, i) => (
+								{shots.map((shot, i) => (
+									<Skeleton>
 										<Image
 											src={shot}
 											alt={`${title} — full page capture ${i + 1}`}
@@ -126,7 +130,8 @@ const {
 											sizes="(min-width: 1440px) 1152px, calc(100vw - 2.5rem)"
 											loading="lazy"
 										/>
-									))}
+									</Skeleton>
+								))}
 								</div>
 							</div>
 						</section>

@@ -1,0 +1,40 @@
+---
+interface Props {
+	class?: string;
+}
+
+const { class: className = "" } = Astro.props;
+---
+
+<div data-skeleton class:list={["relative overflow-hidden bg-grey-3", className]}>
+	<div class="skeleton-shimmer absolute inset-0" aria-hidden="true" />
+	<slot />
+</div>
+
+<script>
+	const markLoaded = (img: Element) =>
+		img.closest("[data-skeleton]")?.classList.add("is-loaded");
+
+	// Cached/eager images may finish before this script runs
+	document.querySelectorAll("img").forEach((img) => {
+		if (img.complete) markLoaded(img);
+	});
+
+	// load/error don't bubble — listen in capture phase
+	document.addEventListener(
+		"load",
+		(e) => {
+			if ((e.target as HTMLElement)?.tagName === "IMG")
+				markLoaded(e.target as HTMLElement);
+		},
+		true,
+	);
+	document.addEventListener(
+		"error",
+		(e) => {
+			if ((e.target as HTMLElement)?.tagName === "IMG")
+				markLoaded(e.target as HTMLElement);
+		},
+		true,
+	);
+</script>
