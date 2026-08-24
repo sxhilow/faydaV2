@@ -1,9 +1,9 @@
 ---
 import { Image } from "astro:assets";
 import type { ImageMetadata } from "astro";
-import Pill from "@components/Pill.astro";
-import Button from "@components/Button.astro";
-import ProjectCard from "./ProjectCard.astro";
+import Pill from "@components/ui/Pill.astro";
+import Button from "@components/ui/Button.astro";
+import ProjectCard from "@components/cards/ProjectCard.astro";
 import ArrowIcon from "@assets/icons/arrow-top-right.svg";
 
 interface MoreProject {
@@ -43,6 +43,7 @@ const {
 <dialog
 	data-project-modal={slug}
 	tabindex="-1"
+	autofocus
 	class="m-0 h-dvh max-h-dvh w-screen max-w-full overflow-hidden bg-transparent pt-16 box-border"
 	aria-label={`${title} — project details`}
 >
