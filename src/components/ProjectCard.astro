@@ -7,6 +7,7 @@ import ArrowIcon from "@assets/icons/arrow-top-right.svg";
 
 interface Props {
 	name: string;
+	slug?: string;
 	year: string;
 	tags: string[];
 	description: string;
@@ -14,7 +15,15 @@ interface Props {
 	reverse?: boolean;
 }
 
-const { name, year, tags, description, image, reverse = false } = Astro.props;
+const {
+	name,
+	slug,
+	year,
+	tags,
+	description,
+	image,
+	reverse = false,
+} = Astro.props;
 ---
 
 <article class="grid border-y border-blue-50 bg-grey-2 lg:grid-cols-2">
@@ -35,24 +44,39 @@ const { name, year, tags, description, image, reverse = false } = Astro.props;
 			loading="lazy"
 		/>
 	</figure>
-	<div class="flex flex-col justify-center gap-4 p-8 xl:p-16 md:border-grey-5" data-project-content>
+	<div
+		class="flex flex-col justify-center gap-4 p-8 xl:p-16 md:border-grey-5"
+		data-project-content
+	>
 		<div class="flex flex-col gap-4">
 			<div class="flex flex-wrap items-center justify-between gap-4">
-				<h3 class="font-display font-semibold text-h3 text-grey-12">{name}</h3>
-				<span class="whitespace-nowrap text-caption text-grey-8">{year}</span>
+				<h3 class="font-display font-semibold text-h3 text-grey-12">
+					{name}
+				</h3>
+				<span class="whitespace-nowrap text-caption text-grey-8"
+					>{year}</span
+				>
 			</div>
 			<ul class="flex flex-wrap gap-2">
-				{tags.map((tag) => (
-					<li>
-						<Pill label={tag} />
-					</li>
-				))}
+				{
+					tags.map((tag) => (
+						<li>
+							<Pill label={tag} />
+						</li>
+					))
+				}
 			</ul>
 		</div>
-		<p class="text-body leading-[1.55] text-grey-10 md:leading-[1.6]">{description}</p>
+		<p class="text-body leading-[1.55] text-grey-10 md:leading-[1.6]">
+			{description}
+		</p>
 		<div>
-			<Button label="View Details" iconPosition="right">
-				<ArrowIcon slot="icon" class="h-4 w-4" />
+			<Button
+				label="View Details"
+				iconPosition="left"
+				{...(slug ? { "data-open-modal": slug, href: `#${slug}` } : { href: "#work" })}
+			>
+				<ArrowIcon slot="icon" class="h-4 w-4 text-blue-500" />
 			</Button>
 		</div>
 	</div>

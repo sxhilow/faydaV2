@@ -2,6 +2,7 @@
 import Section from "@components/Section.astro";
 import SectionHeader from "@components/SectionHeader.astro";
 import ProjectCard from "@components/ProjectCard.astro";
+import ProjectModals from "@components/ProjectModals.astro";
 import { projects } from "@constants/projects.ts";
 
 const recentProjects = projects.slice(0, 3);
@@ -34,4 +35,5 @@ const recentProjects = projects.slice(0, 3);
 			</div>
 		</div>
 	</div>
+	<ProjectModals />
 </Section>

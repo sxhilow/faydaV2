@@ -2,6 +2,7 @@
 import Section from "@components/Section.astro";
 import Button from "@components/Button.astro";
 import ProjectCard from "@components/ProjectCard.astro";
+import ProjectModals from "@components/ProjectModals.astro";
 import ArrowIcon from "@assets/icons/arrow-top-right.svg";
 import { projects } from "@constants/projects.ts";
 
@@ -28,6 +29,7 @@ const LOAD_BATCH = 3;
 			</Button>
 		</div>
 	</div>
+	<ProjectModals />
 </Section>
 
 <script>

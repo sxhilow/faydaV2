@@ -8,6 +8,7 @@ export const projectDescription =
 export const projects = [
 	{
 		name: "Vanguard",
+		slug: "vanguard",
 		year: "2026 - Design from Scratch",
 		tags: ["Branding", "Design", "Development"],
 		image: vanguard,
@@ -15,6 +16,7 @@ export const projects = [
 	},
 	{
 		name: "Meridian",
+		slug: "meridian",
 		year: "2026 - Design from Scratch",
 		tags: ["Branding", "Design", "Development"],
 		image: meridian,
@@ -22,6 +24,7 @@ export const projects = [
 	},
 	{
 		name: "Cendre",
+		slug: "cendre",
 		year: "2026 - Design from Scratch",
 		tags: ["Branding", "Design", "Development"],
 		image: cendre,
@@ -29,6 +32,7 @@ export const projects = [
 	},
 	{
 		name: "Atlas",
+		slug: "atlas",
 		year: "2026 - Design from Scratch",
 		tags: ["Branding", "Design", "Development"],
 		image: vanguard,
@@ -36,6 +40,7 @@ export const projects = [
 	},
 	{
 		name: "Nimbus",
+		slug: "nimbus",
 		year: "2026 - Design from Scratch",
 		tags: ["Branding", "Design", "Development"],
 		image: meridian,
@@ -43,6 +48,7 @@ export const projects = [
 	},
 	{
 		name: "Solace",
+		slug: "solace",
 		year: "2026 - Design from Scratch",
 		tags: ["Branding", "Design", "Development"],
 		image: cendre,
