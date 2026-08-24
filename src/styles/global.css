@@ -73,7 +73,7 @@
 	--shadow-card: 0px 2px 2px rgba(0, 0, 0, 0.1);;
 	--shadow-dark: 0 0 0 2px rgb(10 9 12), 0 1px 2px 0 rgb(10 9 12 / 0.1),
 		inset 0 1px 16px 0 rgb(255 255 255 / 0.1);
-		
+	--shadow-project-shot: 0 4px 12px rgba(0, 0, 0, 0.05);
 
 	/* Animations */
 	--animate-marquee: marquee 24s linear infinite;
@@ -82,6 +82,41 @@
 		to {
 			transform: translateX(-50%);
 		}
+	}
+}
+
+dialog[data-project-modal] {
+	overflow-anchor: none;
+}
+
+dialog[data-project-modal][open] {
+	animation: modal-sheet 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes modal-sheet {
+	from {
+		transform: translateY(100dvh);
+	}
+}
+
+dialog[data-project-modal]::backdrop {
+	background: rgb(0 0 0 / 0.5);
+}
+
+dialog[data-project-modal][open]::backdrop {
+	animation: modal-backdrop 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes modal-backdrop {
+	from {
+		opacity: 0;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	dialog[data-project-modal][open],
+	dialog[data-project-modal][open]::backdrop {
+		animation: none;
 	}
 }
 

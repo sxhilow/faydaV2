@@ -1,0 +1,184 @@
+---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import Pill from "@components/Pill.astro";
+import Button from "@components/Button.astro";
+import ProjectCard from "./ProjectCard.astro";
+import ArrowIcon from "@assets/icons/arrow-top-right.svg";
+
+interface MoreProject {
+	name: string;
+	slug: string;
+	year: string;
+	tags: string[];
+	description: string;
+	image: ImageMetadata;
+}
+
+interface Props {
+	slug: string;
+	title: string;
+	tags: string[];
+	description: string;
+	timeline: string;
+	liveUrl?: string;
+	hero: ImageMetadata;
+	shots: ImageMetadata[];
+	moreProjects: MoreProject[];
+}
+
+const {
+	slug,
+	title,
+	tags,
+	description,
+	timeline,
+	liveUrl,
+	hero,
+	shots,
+	moreProjects,
+} = Astro.props;
+---
+
+<dialog
+	data-project-modal={slug}
+	tabindex="-1"
+	class="m-0 h-dvh max-h-dvh w-screen max-w-full overflow-hidden bg-transparent pt-16 box-border"
+	aria-label={`${title} — project details`}
+>
+	<div class="flex h-full flex-col bg-grey-2">
+		<div class="shrink-0 px-5 py-8 xl:px-0 border-b border-blue-50">
+			<div class="max-w-7xl mx-auto flex items-center gap-8">
+				<h2
+					class="font-display font-bold text-mobile-h3 text-grey-13 md:text-h3"
+				>
+					{title}
+				</h2>
+			</div>
+		</div>
+
+		<div
+			data-modal-scroll
+			class="min-h-0 flex-1 overflow-y-auto max-w-7xl mx-5 xl:mx-auto border-x border-blue-50"
+		>
+			<div class="flex flex-col gap-16 py-8 md:py-16">
+				<div class="border-y border-blue-50 px-5 xl:px-16">
+					<figure class="border-x border-blue-50">
+						<Image
+							src={hero}
+							alt={`${title} — landing page preview`}
+							class="aspect-4/3 w-full object-cover"
+						/>
+					</figure>
+				</div>
+
+				<section
+					class="flex flex-col gap-6 px-5 xl:px-16"
+					aria-label="Project details"
+				>
+					<div
+						class="flex flex-wrap items-start justify-between gap-x-12 gap-y-6"
+					>
+						<div class="flex flex-wrap flex-col gap-2">
+							<span class="text-caption text-grey-10">Tags</span>
+							<ul class="flex flex-wrap gap-2">
+								{
+									tags.map((tag) => (
+										<li>
+											<Pill label={tag} />
+										</li>
+									))
+								}
+							</ul>
+						</div>
+						<div class="flex flex-wrap flex-col gap-2">
+							<span class="text-caption text-grey-10"
+								>Timeline</span
+							>
+							<span class="text-body-sm text-grey-10"
+								>{timeline}</span
+							>
+						</div>
+					</div>
+					<p class="text-body leading-[1.6] text-grey-10">
+						{description}
+					</p>
+				</section>
+
+				{
+					shots.length > 0 && (
+						<section
+							class="flex flex-col px-5 xl:px-16 border-y border-blue-50"
+							aria-label="Complete design showcase"
+						>
+							<div class="flex flex-col gap-2 py-2 border-x border-blue-50">
+								<span class="text-caption text-grey-13 px-5">
+									Complete Design
+								</span>
+								<div class="flex flex-col gap-2">
+									{shots.map((shot, i) => (
+										<Image
+											src={shot}
+											alt={`${title} — full page capture ${i + 1}`}
+											class="w-full border-y border-blue-50 shadow-project-shot"
+											widths={[640, 1280]}
+											sizes="(min-width: 1440px) 1152px, calc(100vw - 2.5rem)"
+											loading="lazy"
+										/>
+									))}
+								</div>
+							</div>
+						</section>
+					)
+				}
+
+				{
+					liveUrl && (
+						<section
+							class="flex flex-col justify-center items-center gap-2 px-5 xl:px-16"
+							aria-label="Live link"
+						>
+							<span class="text-caption text-grey-10">
+								Live Link / Demo
+							</span>
+							<div>
+								<Button
+									label="Visit Live Site"
+									variant="dark"
+									href={liveUrl}
+									iconPosition="left"
+								>
+									<ArrowIcon
+										slot="icon"
+										class="h-4 w-4 text-blue-500"
+									/>
+								</Button>
+							</div>
+						</section>
+					)
+				}
+
+				<section
+					class="flex flex-col gap-2 py-8"
+					aria-label="More projects you might like"
+				>
+					<span
+						class="text-caption text-center text-grey-13 px-5 xl:px-16"
+					>
+						More Projects You might like
+					</span>
+					<div class="flex flex-col border-t border-blue-50">
+						{
+							moreProjects.map((project, i) => (
+								<ProjectCard
+									{...project}
+									reverse={i % 2 === 1}
+								/>
+							))
+						}
+					</div>
+				</section>
+			</div>
+		</div>
+	</div>
+</dialog>

@@ -1,0 +1,44 @@
+---
+import { getCollection } from "astro:content";
+import ProjectModal from "@components/ProjectModal.astro";
+import { projects } from "@constants/projects.ts";
+
+// Every dialog is mounted on every page that shows project cards, so the
+// "More Projects" switcher inside any modal can always find its target.
+const entries = await getCollection("projects");
+
+const moreProjectsFor = (slug: string) =>
+	projects
+		.filter((project) => project.slug !== slug)
+		.slice(0, 3)
+		.map(({ name, slug: cardSlug, year, tags, description, image }) => ({
+			name,
+			slug: cardSlug,
+			year,
+			tags,
+			description,
+			image,
+		}));
+---
+
+{
+	entries.map((entry) => (
+		<ProjectModal
+			slug={entry.id}
+			title={entry.data.title}
+			tags={entry.data.tags}
+			description={entry.data.description}
+			timeline={entry.data.timeline}
+			liveUrl={entry.data.liveUrl}
+			hero={entry.data.hero}
+			shots={entry.data.shots}
+			moreProjects={moreProjectsFor(entry.id)}
+		/>
+	))
+}
+
+<script>
+	import { initProjectModals } from "@scripts/projectModal";
+
+	initProjectModals();
+</script>
