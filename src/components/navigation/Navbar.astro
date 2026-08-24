@@ -52,7 +52,7 @@ const wrapperAttrs = isPrimary && invertible ? { "data-sweep-border": "" } : {};
 					<a
 						href="/#top"
 						aria-label="Fayda Studio home"
-						class="relative flex"
+						class="relative inline-flex "
 					>
 						<span class="menu-logo relative block">
 							<LogoDark class="menu-logo-dark block h-8 w-auto" />
@@ -117,13 +117,11 @@ const wrapperAttrs = isPrimary && invertible ? { "data-sweep-border": "" } : {};
 				<div data-nav-secondary class="absolute inset-x-0 top-0 z-[70]">
 					<div class="mx-auto w-full max-w-5xl px-8 md:px-6 xl:px-0">
 						<nav class="flex items-center justify-between gap-8 rounded-b-4xl bg-grey-2 px-8 py-4 border border-t-0 border-grey-5 shadow-card">
-							<a
-								href="/#top"
-								aria-label="Fayda Studio home"
-								class="flex items-center"
-							>
-								<LogoDark class="block h-8 w-auto" />
-							</a>
+							<div class="flex flex-1 items-center">
+								<a href="/#top" aria-label="Fayda Studio home">
+									<LogoDark class="block h-8 w-auto" />
+								</a>
+							</div>
 							<label
 								for="menu-toggle"
 								class="flex cursor-pointer items-center gap-2 lg:hidden"
