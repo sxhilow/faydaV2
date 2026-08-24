@@ -4,14 +4,28 @@ export function initProjectModals(): void {
 	if (document.body.dataset.projectModalBound) return;
 	document.body.dataset.projectModalBound = "1";
 
+	let savedScrollY = 0;
+
 	const dialogs = () =>
 		Array.from(
 			document.querySelectorAll<HTMLDialogElement>("[data-project-modal]"),
 		);
 
 	const lockScroll = (locked: boolean) => {
-		ScrollSmoother.get()?.paused(locked);
-		document.documentElement.style.overflow = locked ? "hidden" : "";
+		const smoother = ScrollSmoother.get();
+		if (locked) {
+			savedScrollY = window.scrollY;
+			smoother?.paused(true);
+			document.documentElement.style.overflow = "hidden";
+		} else {
+			document.documentElement.style.overflow = "";
+			smoother?.paused(false);
+			if (smoother) {
+				smoother.scrollTo(savedScrollY, false);
+			} else {
+				window.scrollTo(0, savedScrollY);
+			}
+		}
 	};
 
 	const openModal = (id: string) => {
@@ -21,16 +35,20 @@ export function initProjectModals(): void {
 		if (!target || target.open) return;
 
 		dialogs().forEach((d) => d.open && d.close());
+		lockScroll(true);
 		target.showModal();
-		target.focus();
+
+		// Reassert scroll position — guards against any residual UA scroll
+		// triggered by showModal()'s internal focus step.
+		const smoother = ScrollSmoother.get();
+		if (smoother) smoother.scrollTo(savedScrollY, false);
+		else window.scrollTo(0, savedScrollY);
+
 		const scroller = target.querySelector<HTMLElement>("[data-modal-scroll]");
 		if (scroller) scroller.scrollTop = 0;
-		lockScroll(true);
 	};
 
-	// Openers: card "View Details" buttons and the modal's own switcher cards.
-	// Navigation is suppressed only when a matching dialog exists — the plain
-	// href stays as the no-JS fallback.
+	// buttons and the modal's own switcher cards.
 	document.addEventListener("click", (e) => {
 		const opener = (e.target as HTMLElement).closest<HTMLElement>(
 			"[data-open-modal]",
@@ -52,7 +70,7 @@ export function initProjectModals(): void {
 		});
 	});
 
-	// Native close path (button, ESC, backdrop) always releases the lock
+	// Native close path (ESC, backdrop) always releases the lock
 	document.addEventListener("close", (e) => {
 		if ((e.target as HTMLElement).matches?.("[data-project-modal]")) {
 			lockScroll(false);
