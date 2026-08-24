@@ -1,20 +1,20 @@
 ---
 import Section from "@components/Section.astro";
 import Pill from "@components/Pill.astro";
+import { valueProps } from "@constants/whyUs";
 ---
 
-<Section
-	id="why-us"
-	className="relative z-30 bg-blue-500 xl:bg-transparent"
->
+<Section id="why-us" className="relative z-30 bg-blue-500 xl:bg-transparent">
 	<div
-		class="why-us-pin relative min-h-[100dvh] flex flex-col items-center justify-center max-w-7xl mx-5 border-x border-blue-400 xl:border-blue-50 md:mx-6 xl:mx-auto"
+		class="why-us-pin relative flex min-h-dvh flex-col justify-center gap-16 max-w-7xl border-x border-blue-400 mx-5 xl:mx-auto"
 		data-fade-in-content
 	>
-		<div class="flex flex-col items-center gap-4 text-center px-8 md:px-20">
+		<div
+			class="flex flex-col items-center gap-4 text-center px-8 py-20 md:px-20 xl:flex-row xl:items-start xl:justify-between xl:gap-16 xl:px-8 xl:text-right"
+		>
 			<Pill label="Why Fayda" tone="blue" invertible />
 			<h2
-				class="font-display font-semibold leading-[1.3] text-mobile-h4 md:text-h3"
+				class="font-display font-semibold text-mobile-h4 md:text-h3 xl:flex-1"
 			>
 				<span class="text-blue-50">At Fayda, </span>
 				<span class="text-blue-200" data-why-us-reveal>
@@ -27,6 +27,33 @@ import Pill from "@components/Pill.astro";
 					out, and grow with confidence.
 				</span>
 			</h2>
+		</div>
+
+		<div
+			data-fade-in-content
+			data-why-us-cards
+			class="w-full grid grid-cols-1 divide-y divide-blue-400 md:grid-cols-3 md:divide-x md:divide-y-0 xl:max-w-5xl border-y xl:border-0 border-blue-400 xl:self-end"
+		>
+			{
+				valueProps.map((prop) => (
+					<div
+						data-why-us-cell
+						class="flex flex-col gap-4 p-8 text-center md:px-4 md:py-8 xl:p-8 xl:text-left"
+					>
+						<span class="text-caption text-blue-300">
+							{prop.index}
+						</span>
+						<div class="flex flex-col gap-2">
+							<h3 class="font-display font-bold text-h4 text-grey-1">
+								{prop.title}
+							</h3>
+							<p class="text-body text-grey-1">
+								{prop.description}
+							</p>
+						</div>
+					</div>
+				))
+			}
 		</div>
 	</div>
 </Section>
