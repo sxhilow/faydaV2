@@ -45,17 +45,24 @@ const wrapperAttrs = isPrimary && invertible ? { "data-sweep-border": "" } : {};
 		<div
 			data-nav-primary
 			{...wrapperAttrs}
-			class="relative z-60 flex w-full justify-between items-center px-8 md:px-16 xl:px-20 border-b border-blue-50"
+			class="relative z-[70] flex w-full justify-between items-center px-8 md:px-16 xl:px-20 border-b border-blue-50"
 		>
 			<div class="w-full flex justify-between items-center py-8">
-				<a href="/#top" aria-label="Fayda Studio home" class="relative flex flex-1">
+				<a
+					href="/#top"
+					aria-label="Fayda Studio home"
+					class="relative flex flex-1"
+				>
 					<span class="menu-logo relative block">
 						<LogoDark class="menu-logo-dark block h-8 w-auto" />
 						<LogoLight class="menu-logo-light absolute left-0 top-0 block h-8 w-auto opacity-0" />
 						<LogoSahil class="menu-logo-sahil absolute left-0 top-0 block h-8 w-auto opacity-0" />
 					</span>
 				</a>
-				<nav aria-label="Primary" class="hidden lg:flex items-center justify-center gap-8">
+				<nav
+					aria-label="Primary"
+					class="hidden lg:flex items-center justify-center gap-8"
+				>
 					{links.map((link) => (
 						<a
 							href={link.href}
@@ -67,7 +74,10 @@ const wrapperAttrs = isPrimary && invertible ? { "data-sweep-border": "" } : {};
 					))}
 				</nav>
 				<div class="hidden flex-1 justify-end lg:flex">
-					<Button label="Book a 15-Min Call" {...(invertible ? { "data-invert": "cta" } : {})}>
+					<Button
+						label="Book a 15-Min Call"
+						{...(invertible ? { "data-invert": "cta" } : {})}
+					>
 						<MeetIcon slot="icon" class="h-3 w-[14px]" />
 					</Button>
 				</div>
@@ -88,8 +98,8 @@ const wrapperAttrs = isPrimary && invertible ? { "data-sweep-border": "" } : {};
 						</span>
 					</span>
 					<span class="relative block h-4 w-4">
-						<MenuIcon class="menu-icon-open absolute inset-0 h-4 w-4" />
-						<CloseIcon class="menu-icon-close absolute inset-0 h-4 w-4 opacity-0" />
+						<MenuIcon class="menu-icon-open absolute inset-0 h-4 w-4 text-grey-10" />
+						<CloseIcon class="menu-icon-close absolute inset-0 h-4 w-4 text-grey-1 opacity-0" />
 					</span>
 				</label>
 			</div>
@@ -101,11 +111,15 @@ const wrapperAttrs = isPrimary && invertible ? { "data-sweep-border": "" } : {};
 	!isPrimary && (
 		<>
 			<input type="checkbox" id="menu-toggle" class="peer sr-only" />
-			<header class="fixed inset-x-0 top-0 z-[60]">
-				<div data-nav-secondary class="absolute inset-x-0 top-0 z-[60]">
+			<header class="fixed inset-x-0 top-0 z-[100]">
+				<div data-nav-secondary class="absolute inset-x-0 top-0 z-[70]">
 					<div class="mx-auto w-full max-w-5xl px-8 md:px-6 xl:px-0">
 						<nav class="flex items-center justify-between gap-8 rounded-b-4xl bg-grey-2 px-8 py-4 border border-t-0 border-grey-5 shadow-card">
-							<a href="/#top" aria-label="Fayda Studio home" class="flex flex-1 items-center">
+							<a
+								href="/#top"
+								aria-label="Fayda Studio home"
+								class="flex flex-1 items-center"
+							>
 								<LogoDark class="block h-8 w-auto" />
 							</a>
 							<label
@@ -114,14 +128,16 @@ const wrapperAttrs = isPrimary && invertible ? { "data-sweep-border": "" } : {};
 								aria-label="Toggle menu"
 							>
 								<span class="relative block">
-									<span class="menu-label-open block text-body-sm text-grey-10">Menu</span>
+									<span class="menu-label-open block text-body-sm text-grey-10">
+										Menu
+									</span>
 									<span class="menu-label-close absolute inset-0 block text-body-sm text-grey-10 opacity-0">
 										Close
 									</span>
 								</span>
 								<span class="relative block h-4 w-4">
-									<MenuIcon class="menu-icon-open absolute inset-0 h-4 w-4" />
-									<CloseIcon class="menu-icon-close absolute inset-0 h-4 w-4 opacity-0" />
+									<MenuIcon class="menu-icon-open absolute inset-0 h-4 w-4 text-grey-10" />
+									<CloseIcon class="menu-icon-close absolute inset-0 h-4 w-4 text-grey-10 opacity-0" />
 								</span>
 							</label>
 							<div class="hidden items-center gap-8 lg:flex">
@@ -136,7 +152,10 @@ const wrapperAttrs = isPrimary && invertible ? { "data-sweep-border": "" } : {};
 							</div>
 							<div class="hidden flex-1 justify-end lg:flex">
 								<Button label="Book a 15-Min Call">
-									<MeetIcon slot="icon" class="h-3 w-[14px]" />
+									<MeetIcon
+										slot="icon"
+										class="h-3 w-[14px]"
+									/>
 								</Button>
 							</div>
 						</nav>
@@ -145,26 +164,25 @@ const wrapperAttrs = isPrimary && invertible ? { "data-sweep-border": "" } : {};
 			</header>
 			<div
 				id="mobile-menu"
-				class="fixed inset-x-0 top-0 bottom-0 z-50 flex -translate-y-full flex-col bg-blue-500 px-8 pb-8 pt-28 transition-transform duration-500 ease-in-out peer-checked:translate-y-0 motion-reduce:transition-none lg:hidden"
+				class="fixed inset-x-0 top-0 bottom-0 z-[65] flex -translate-y-full flex-col bg-blue-500 px-8 pb-8 pt-28 transition-transform duration-500 ease-in-out peer-checked:translate-y-0 motion-reduce:transition-none lg:hidden"
 			>
-				<nav aria-label="Mobile" class="mt-8 flex flex-col justify-center">
+				<nav
+					aria-label="Mobile"
+					class="mt-8 flex flex-col justify-center"
+				>
 					{links.map((link) => (
-						<label for="menu-toggle" class="cursor-pointer">
-							<a
-								href={link.href}
-								class="block border-b border-blue-400 py-8 text-center font-display text-mobile-h2 font-semibold text-grey-1"
-							>
-								{link.label}
-							</a>
-						</label>
+						<a
+							href={link.href}
+							class="block border-b border-blue-400 py-8 text-center font-display text-mobile-h2 font-semibold text-grey-1"
+						>
+							{link.label}
+						</a>
 					))}
 
 					<div class="mb-8 mt-auto pt-8 px-8">
-						<label for="menu-toggle" class="block cursor-pointer">
-							<Button label="Book a 15 min Call" className="w-full">
-								<MeetIcon slot="icon" class="h-3 w-[14px]" />
-							</Button>
-						</label>
+						<Button label="Book a 15 min Call" className="w-full">
+							<MeetIcon slot="icon" class="h-3 w-[14px]" />
+						</Button>
 					</div>
 				</nav>
 			</div>
