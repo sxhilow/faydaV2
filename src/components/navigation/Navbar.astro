@@ -35,16 +35,14 @@ const menuLabelAttrs =
 				"data-invert-dark": "text-grey-10",
 				"data-invert-light": "text-white",
 			}
-		: {};
-
-const wrapperAttrs = isPrimary && invertible ? { "data-sweep-border": "" } : {};
+		: {		};
 ---
+
 
 {
 	isPrimary && (
 		<div
 			data-nav-primary
-			{...wrapperAttrs}
 			class="relative z-[70] flex w-full justify-between items-center px-8 md:px-16 xl:px-20 border-b border-blue-50"
 		>
 			<div class="w-full flex justify-between items-center py-8">

@@ -7,14 +7,7 @@ const EXPAND_DURATION = 0.4;
 const COLLAPSE_DURATION = 0.4;
 const FOLLOW_DURATION = 2;
 const IDLE_TIMEOUT = 800;
-const OVERLAP_RATIO = 0.4;
 const FILL_LERP = 0.12;
-
-interface InvertTarget {
-	el: HTMLElement;
-	apply: (inverted: boolean) => void;
-	inverted: boolean;
-}
 
 interface ClipTarget {
 	el: HTMLElement;
@@ -23,17 +16,6 @@ interface ClipTarget {
 	text?: HTMLElement;
 	blue?: HTMLElement;
 }
-
-interface BorderTarget {
-	el: HTMLElement;
-	overlay: HTMLElement;
-}
-
-const invertClass =
-	(el: HTMLElement, darkClass: string, lightClass: string) => (inverted: boolean) => {
-		el.classList.toggle(darkClass, !inverted);
-		el.classList.toggle(lightClass, inverted);
-	};
 
 export function initSweep(): void {
 	const strip = document.getElementById(STRIP_ID);
@@ -52,7 +34,6 @@ export function initSweep(): void {
 	const menuLogo = document.querySelector<HTMLElement>(".menu-logo");
 	const logoSahil = document.querySelector<HTMLElement>(".menu-logo-sahil");
 
-	const targets: InvertTarget[] = [];
 	const clips: ClipTarget[] = [];
 
 	document.querySelectorAll<HTMLElement>("[data-invert-clip]").forEach((el) => {
@@ -125,18 +106,6 @@ export function initSweep(): void {
 		clips.push({ el, clone, replace: false });
 	});
 
-	document.querySelectorAll<HTMLElement>("[data-invert]").forEach((el) => {
-		if (el.hasAttribute("data-invert-clip")) return;
-		const darkClass = el.dataset.invertDark;
-		const lightClass = el.dataset.invertLight;
-		if (!darkClass || !lightClass) return;
-		targets.push({
-			el,
-			apply: invertClass(el, darkClass, lightClass),
-			inverted: false,
-		});
-	});
-
 	if (menuLogo && logoSahil) {
 		logoSahil.style.clipPath = "inset(100%)";
 		logoSahil.style.opacity = "1";
@@ -155,32 +124,7 @@ export function initSweep(): void {
 		clips.push({ el: menuLogo, clone: wrapper, blue, text: logoSahil, replace: true });
 	}
 
-	const borders: BorderTarget[] = [];
-
-	document.querySelectorAll<HTMLElement>("[data-sweep-border]").forEach((el) => {
-		el.classList.add("relative");
-		const overlay = document.createElement("div");
-		overlay.className = "absolute border border-blue-400 pointer-events-none";
-		overlay.setAttribute("aria-hidden", "true");
-		overlay.style.clipPath = "inset(100%)";
-		const cs = getComputedStyle(el);
-		overlay.style.top = `-${cs.paddingTop}`;
-		overlay.style.right = `-${cs.paddingRight}`;
-		overlay.style.bottom = `-${cs.paddingBottom}`;
-		overlay.style.left = `-${cs.paddingLeft}`;
-		el.appendChild(overlay);
-		borders.push({ el, overlay });
-	});
-
-	const navBorderSweep = document.getElementById("nav-border-sweep");
-	if (navBorderSweep) {
-		const navHeader = navBorderSweep.closest("header");
-		if (navHeader) {
-			borders.push({ el: navHeader, overlay: navBorderSweep });
-		}
-	}
-
-	if (!targets.length && !clips.length && !borders.length) return;
+	if (!clips.length) return;
 
 	const menuToggle = document.getElementById("menu-toggle") as HTMLInputElement | null;
 
@@ -196,22 +140,6 @@ export function initSweep(): void {
 	let fillStartY = 0;
 	let fillProgress = 0;
 	let lastCursorY = window.innerHeight / 2;
-
-	const applyTarget = (target: InvertTarget, inverted: boolean) => {
-		if (target.inverted === inverted) return;
-		target.inverted = inverted;
-		target.apply(inverted);
-	};
-
-	const resetTargets = () => targets.forEach((t) => applyTarget(t, false));
-
-	const isOverlapped = (stripRect: DOMRect, el: HTMLElement) => {
-		const rect = el.getBoundingClientRect();
-		if (rect.width <= 0 || rect.height <= 0) return false;
-		const overlap =
-			Math.min(stripRect.bottom, rect.bottom) - Math.max(stripRect.top, rect.top);
-		return overlap >= rect.height * OVERLAP_RATIO;
-	};
 
 	const hideClip = (clip: ClipTarget) => {
 		if (clip.replace) {
@@ -256,31 +184,6 @@ export function initSweep(): void {
 	};
 
 	const resetClips = () => clips.forEach(hideClip);
-
-	const hideBorder = (border: BorderTarget) => {
-		border.overlay.style.clipPath = "inset(100%)";
-	};
-
-	const clipBorder = (border: BorderTarget, stripRect: DOMRect) => {
-		const rect = border.el.getBoundingClientRect();
-		if (rect.width <= 0 || rect.height <= 0) {
-			hideBorder(border);
-			return;
-		}
-
-		const overlapTop = Math.max(stripRect.top, rect.top);
-		const overlapBottom = Math.min(stripRect.bottom, rect.bottom);
-		if (overlapBottom <= overlapTop) {
-			hideBorder(border);
-			return;
-		}
-
-		const top = overlapTop - rect.top;
-		const bottom = rect.bottom - overlapBottom;
-		border.overlay.style.clipPath = `inset(${top}px 0 ${bottom}px 0)`;
-	};
-
-	const resetBorders = () => borders.forEach(hideBorder);
 
 	const loop = () => {
 		rafId = 0;
@@ -343,9 +246,7 @@ export function initSweep(): void {
 		}
 
 		if (running) {
-			targets.forEach((t) => applyTarget(t, isOverlapped(stripBox as DOMRect, t.el)));
 			clips.forEach((c) => clipToStrip(c, stripBox as DOMRect));
-			borders.forEach((b) => clipBorder(b, stripBox as DOMRect));
 		}
 
 		rafId = requestAnimationFrame(loop);
@@ -362,9 +263,7 @@ export function initSweep(): void {
 			if (rafId) cancelAnimationFrame(rafId);
 			rafId = 0;
 		}
-		resetTargets();
 		resetClips();
-		resetBorders();
 	};
 
 	let fillStartTop = 0;
@@ -383,9 +282,7 @@ export function initSweep(): void {
 
 		gsap.killTweensOf(strip);
 		running = false;
-		resetTargets();
 		resetClips();
-		resetBorders();
 		strip.hidden = false;
 
 		const vh = window.innerHeight;
