@@ -6,7 +6,7 @@ import { initMarquee } from "@animations/marquee";
 import { initPills } from "@animations/pill";
 import { initSweep } from "@animations/sweep";
 import { initWhyUs } from "@animations/whyus";
-import { initFeatures } from "@animations/features";
+import { initProcess } from "@animations/process";
 import { initRecentProjects } from "@animations/recentProjects";
 import { initCtaTransition } from "./ctaTransition";
 import { initServices } from "./services";
@@ -92,7 +92,7 @@ if (!prefersReducedMotion) {
 
 		initPills();
 		initSweep();
-		initFeatures();
+		initProcess();
 		initRecentProjects();
 		initCtaTransition();
 		initServices();

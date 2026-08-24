@@ -3,10 +3,10 @@ import { gsap } from "gsap";
 const CARD_PIN_DISTANCE = 2000;
 const RIGHT_FILL_FRACTION = 0.15;
 
-export function initFeatures(): void {
-	const cardsEl = document.querySelector<HTMLElement>("[data-features-cards]");
-	const grid = cardsEl?.querySelector<HTMLElement>("[data-features-grid]");
-	
+export function initProcess(): void {
+	const cardsEl = document.querySelector<HTMLElement>("[data-process-cards]");
+	const grid = cardsEl?.querySelector<HTMLElement>("[data-process-grid]");
+
 	if (!cardsEl || !grid) return;
 
 	const borderFills = Array.from(
