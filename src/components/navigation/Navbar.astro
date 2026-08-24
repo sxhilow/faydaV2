@@ -48,17 +48,19 @@ const wrapperAttrs = isPrimary && invertible ? { "data-sweep-border": "" } : {};
 			class="relative z-[70] flex w-full justify-between items-center px-8 md:px-16 xl:px-20 border-b border-blue-50"
 		>
 			<div class="w-full flex justify-between items-center py-8">
-				<a
-					href="/#top"
-					aria-label="Fayda Studio home"
-					class="relative flex"
-				>
-					<span class="menu-logo relative block">
-						<LogoDark class="menu-logo-dark block h-8 w-auto" />
-						<LogoLight class="menu-logo-light absolute left-0 top-0 block h-8 w-auto opacity-0" />
-						<LogoSahil class="menu-logo-sahil absolute left-0 top-0 block h-8 w-auto opacity-0" />
-					</span>
-				</a>
+				<div class="flex-1">
+					<a
+						href="/#top"
+						aria-label="Fayda Studio home"
+						class="relative flex"
+					>
+						<span class="menu-logo relative block">
+							<LogoDark class="menu-logo-dark block h-8 w-auto" />
+							<LogoLight class="menu-logo-light absolute left-0 top-0 block h-8 w-auto opacity-0" />
+							<LogoSahil class="menu-logo-sahil absolute left-0 top-0 block h-8 w-auto opacity-0" />
+						</span>
+					</a>
+				</div>
 				<nav
 					aria-label="Primary"
 					class="hidden lg:flex items-center justify-center gap-8"
