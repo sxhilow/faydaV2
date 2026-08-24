@@ -19,7 +19,7 @@ export const footerNav = [
 ];
 
 export const socials = [
-	{ href: "https://x.com", label: "X (Twitter)", icon: socialX },
-	{ href: "https://linkedin.com", label: "LinkedIn", icon: socialLinkedIn },
-	{ href: "https://tiktok.com", label: "TikTok", icon: socialTikTok },
+	{ href: "https://x.com/BySahilJada", label: "X (Twitter)", icon: socialX },
+	{ href: "https://www.linkedin.com/in/sahiljada/", label: "LinkedIn", icon: socialLinkedIn },
+	{ href: "https://www.tiktok.com/@sahil.builds", label: "TikTok", icon: socialTikTok },
 ];
