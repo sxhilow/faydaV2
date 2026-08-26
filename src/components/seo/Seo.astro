@@ -60,7 +60,7 @@ const twitterHandle = twitterUrl
   ? `@${new URL(twitterUrl).pathname.split("/").filter(Boolean).pop()}`
   : null;
 
-const combinedSchema = [organizationSchema, websiteSchema];
+const combinedSchema: object[] = [organizationSchema, websiteSchema];
 
 if (service) {
   combinedSchema.push(
@@ -98,8 +98,8 @@ const jsonLD = JSON.stringify(combinedSchema);
 <meta property="og:image" content={ogImage.toString()} />
 <meta property="og:image:secure_url" content={ogImage.toString()} />
 <meta property="og:image:type" content={imageType} />
-<meta property="og:image:width" content={image.width ?? 1200} />
-<meta property="og:image:height" content={image.height ?? 630} />
+<meta property="og:image:width" content={String(image.width ?? 1200)} />
+<meta property="og:image:height" content={String(image.height ?? 630)} />
 <meta property="og:image:alt" content={image.alt} />
 
 <!-- Twitter -->
