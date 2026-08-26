@@ -64,18 +64,6 @@ const {
 			class="min-h-0 flex-1 overflow-y-auto max-w-7xl mx-5 xl:mx-auto border-x border-blue-50"
 		>
 			<div class="flex flex-col gap-16 py-8 md:py-16">
-				<div class="border-y border-blue-50 px-5 xl:px-16">
-					<figure class="border-x border-blue-50">
-						<Skeleton>
-							<Image
-								src={hero}
-								alt={`${title} — landing page preview`}
-								class="aspect-4/3 w-full object-cover"
-							/>
-						</Skeleton>
-					</figure>
-				</div>
-
 				<section
 					class="flex flex-col gap-6 px-5 xl:px-16"
 					aria-label="Project details"
@@ -108,6 +96,18 @@ const {
 						{description}
 					</p>
 				</section>
+
+				<div class="border-y border-blue-50 px-5 xl:px-16">
+					<figure class="border-x border-blue-50">
+						<Skeleton>
+							<Image
+								src={hero}
+								alt={`${title} — landing page preview`}
+								class="aspect-4/3 w-full object-cover"
+							/>
+						</Skeleton>
+					</figure>
+				</div>
 
 				{
 					shots.length > 0 && (
