@@ -1,4 +1,4 @@
-const SLOW_RATE = 0.4;
+const SLOW_RATE = 0.2;
 
 export function initMarquee(): void {
 	const track = document.querySelector<HTMLElement>("[data-marquee-track]");
