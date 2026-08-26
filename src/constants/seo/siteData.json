@@ -4,7 +4,7 @@
   "keywords": "web development agency, website design, website redesign, Astro development, conversion-focused websites, UI/UX design, e-commerce development, web app development",
   "url": "https://fayda.studio",
   "image": {
-    "src": "/og.jpg",
+    "src": "/og.jpg?v=2",
     "alt": "Fayda Studio — Websites built from the ground up",
     "type": "image/jpeg",
     "width": 1200,
@@ -44,7 +44,8 @@
   },
   "socialProfiles": [
     "https://www.linkedin.com/company/fayda-studio/",
-    "https://www.linkedin.com/in/sahiljada/"
+    "https://www.linkedin.com/in/sahiljada/",
+    "https://x.com/BySahilJada"
   ],
   "services": [
     {
