@@ -50,9 +50,9 @@ const {
 >
 	<div class="flex h-full flex-col bg-grey-2">
 		<div class="shrink-0 px-5 py-8 xl:px-0 border-b border-blue-50">
-			<div class="max-w-7xl mx-auto flex items-center gap-8">
+			<div class="max-w-7xl mx-auto flex items-center gap-8 xl:px-16">
 				<h2
-					class="font-display font-bold text-mobile-h3 text-grey-13 md:text-h3"
+					class="font-display font-semibold text-mobile-h3 text-grey-13 md:text-h3"
 				>
 					{title}
 				</h2>
@@ -115,10 +115,7 @@ const {
 							class="flex flex-col px-5 xl:px-16 border-y border-blue-50"
 							aria-label="Complete design showcase"
 						>
-							<div class="flex flex-col gap-2 pt-2 border-x border-blue-50">
-								<span class="text-caption text-grey-13 px-5">
-									Complete Design
-								</span>
+							<div class="flex flex-col gap-2 border-x border-blue-50">
 								<div class="flex flex-col gap-2">
 									{shots.map((shot, i) => (
 										<Skeleton>
