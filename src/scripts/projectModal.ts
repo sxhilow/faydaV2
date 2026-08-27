@@ -37,6 +37,9 @@ export function initProjectModals(): void {
 		dialogs().forEach((d) => d.open && d.close());
 		lockScroll(true);
 		target.showModal();
+		window.posthog?.capture("project_modal_opened", {
+			project_slug: id,
+		});
 
 		// Reassert scroll position — guards against any residual UA scroll
 		// triggered by showModal()'s internal focus step.

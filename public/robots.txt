@@ -1,4 +1,32 @@
+# Allow all crawlers
 User-agent: *
 Allow: /
+
+# Explicitly allow AI/LLM crawlers
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+# Disallow admin/internal paths
+User-agent: *
+Disallow: /api/
+Disallow: /_astro/
 
 Sitemap: https://fayda.studio/sitemap-index.xml
