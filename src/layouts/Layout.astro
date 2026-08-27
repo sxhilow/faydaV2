@@ -3,6 +3,7 @@ import "@styles/global.css";
 import Navbar from "@components/navigation/Navbar.astro";
 import Footer from "@components/navigation/Footer.astro";
 import Seo from "@components/seo/Seo.astro";
+import PostHog from "@components/posthog.astro";
 
 const {
 	title,
@@ -17,10 +18,14 @@ const {
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+		<link rel="manifest" href="/site.webmanifest" />
 		<meta name="generator" content={Astro.generator} />
 		<meta name="theme-color" content="#2553FF" />
 		<Seo {title} {description} {noindex} />
+		<PostHog />
 	</head>
 	<body class="bg-grey-2 overflow-x-clip has-checked:overflow-hidden">
 		<Navbar />
@@ -59,6 +64,18 @@ const {
 		</div>
 		<script>
 			import "@animations/index";
+
+			document.addEventListener("click", (event) => {
+				const contactCta = (event.target as HTMLElement).closest(
+					"[data-posthog-contact-cta]",
+				);
+				if (!contactCta) return;
+
+				window.posthog?.capture("contact_cta_clicked", {
+					cta_label: contactCta.textContent?.trim(),
+					placement: contactCta.closest("footer") ? "footer" : "page_content",
+				});
+			});
 		</script>
 	</body>
 </html>
