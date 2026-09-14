@@ -108,6 +108,20 @@
 	}
 }
 
+/* Hidden on load to prevent a flash before JS hides it; GSAP reveals it
+   on scroll-up via inline styles, which override these defaults. */
+[data-nav-secondary] {
+	transform: translateY(-100%);
+	visibility: hidden;
+	opacity: 0;
+}
+
+/* When the mobile menu is open, give the logo bar a solid blue background so
+   scrolling nav links don't bleed through behind the logo. */
+#menu-toggle:checked ~ header nav {
+	background-color: var(--color-blue-500);
+}
+
 dialog[data-project-modal] {
 	overflow-anchor: none;
 }
