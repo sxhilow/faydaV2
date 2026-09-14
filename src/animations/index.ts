@@ -17,9 +17,12 @@ import { initFaqMobile } from "@animations/faqMobile";
 import { initFooterNavHover } from "@animations/footerNavHover";
 import { initAnchors } from "@animations/anchors";
 import { initNav } from "@scripts/nav";
+import { initViewportReload } from "@animations/viewport";
 
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother, SplitText);
 ScrollTrigger.config({ ignoreMobileResize: true });
+
+initViewportReload();
 
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const isDesktop = window.matchMedia("(min-width: 1281px)").matches;
