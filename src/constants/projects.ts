@@ -2,11 +2,20 @@ import vanguard from "@assets/projects/vanguard/hero.webp";
 import meridian from "@assets/projects/meridian/hero.png";
 import cendre from "@assets/projects/cendre/hero.png";
 import quire from "@assets/projects/quire/hero.webp"
+import nexa from "@assets/projects/nexa/Hero.png"
 
 export const projectDescription =
 	"Landing page design for Vanguard, an enterprise-grade logistics and supply chain operator moving freight across South Africa since 1994, full truckload and LTL freight management, secure warehousing, and end-to-end distribution for large industrial and retail clients.";
 
 export const projects = [
+	{
+		name: "Nexa",
+		slug: "nexa",
+		year: "2026 - Design from Scratch",
+		tags: ["Landing Page", "Design", "Concept"],
+		image: nexa,
+		description: "Landing page design for Nexa, and IT MSP who wanted to move away from the usual reactive IT positioning and speak directly to operations leaders who care about stability, performance and long term value, so we designed and built the whole site around that shift.",
+	},
 	{
 		name: "Vanguard",
 		slug: "vanguard",
